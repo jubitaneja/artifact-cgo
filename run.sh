@@ -32,7 +32,7 @@ echo "\t Evaluation: (Known bits) Section 4.2 \t";
 echo "===========================================";
 
 for i in `ls $KB_TEST_CASES/known*.opt`; do
-    echo "********* Test: $i ************;
+    echo "********* Test: $i ************";
     cat "$i";
     $SOUPER_CHECK $SOUPER_SOLVER $SOUPER_KB_ARGS $i;
     $SOUPER2LLVM < $i | $LLVM_AS | $SOUPER $SOUPER_SOLVER $LLVM_KB_ARG;
@@ -44,7 +44,7 @@ echo "\t Evaluation: (Power of two) Section 4.3 \t";
 echo "===========================================";
 
 for i in `ls $POWER_TEST_CASES/power*.opt`; do
-    echo "********* Test: $i ************;
+    echo "********* Test: $i ************";
     cat "$i";
     $SOUPER_CHECK $SOUPER_SOLVER $SOUPER_POWER_ARGS $i;
     $SOUPER2LLVM < $i | $LLVM_AS | $SOUPER $SOUPER_SOLVER $LLVM_POWER_ARG;
@@ -56,7 +56,7 @@ echo "\t Evaluation: (Demanded bits) Section 4.4 \t";
 echo "===========================================";
 
 for i in `ls $DEMANDED_TEST_CASES/demanded*.opt`; do
-    echo "********* Test: $i ************;
+    echo "********* Test: $i ************";
     cat "$i";
     $SOUPER_CHECK $SOUPER_SOLVER $SOUPER_DEMANDED_ARGS $i;
     $SOUPER2LLVM_DB < $i | $LLVM_AS | $SOUPER $SOUPER_SOLVER $LLVM_DEMANDED_ARG;
@@ -68,7 +68,7 @@ echo "\t Evaluation: (Range) Section 4.5 \t";
 echo "===========================================";
 
 for i in `ls $RANGE_TEST_CASES/range*.opt`; do
-    echo "********* Test: $i ************;
+    echo "********* Test: $i ************";
     cat "$i";
     $SOUPER_CHECK $SOUPER_SOLVER $SOUPER_RANGE_ARGS $i;
     $SOUPER2LLVM < $i | $LLVM_AS | $SOUPER $SOUPER_SOLVER $LLVM_RANGE_ARG;
