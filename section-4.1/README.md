@@ -2,7 +2,7 @@
 
 - Follow the steps:
 ```
-$ scp shell.cs.utah.edu:/uusoc/res/embed/cpu2017-1_0_1.iso $HOME
+Copy SPEC ISO (cpu2017-1_0_1.iso) to $HOME
 $ mkdir $HOME/spec
 $ mount -t iso9660 -o ro,exec,loop $HOME/cpu2017-1_0_1.iso $HOME/spec
 $ $HOME/spec/install.sh
