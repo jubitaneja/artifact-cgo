@@ -66,14 +66,14 @@ are ass follows:
 Follow the steps:
 
 ```
-cd $HOME
-git clone https://github.com/jubitaneja/souper.git
-cd $HOME/souper
-git checkout cgo
-./build_deps.sh
-mkdir $HOME/souper/build && cd $HOME/souper/build
-cmake .. -G Ninja
-ninja
+$ cd $HOME
+$ git clone https://github.com/jubitaneja/souper.git
+$ cd $HOME/souper
+$ git checkout cgo
+$ ./build_deps.sh
+$ mkdir $HOME/souper/build && cd $HOME/souper/build
+$ cmake .. -G Ninja
+$ ninja
 ```
 
 You can find the compiled *souper* binary in `$HOME/souper/build` directory,
