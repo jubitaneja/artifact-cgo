@@ -82,7 +82,7 @@ and *clang* binary in `$HOME/souper/third_party/llvm/Release/bin/` directory.
 # Evaluation: Section 4.1
 
 Follow the instructions
-[here](https://github.com/jubitaneja/artifact-cgo/blob/master/section-4.1/README.md).
+[here](https://github.com/jubitaneja/artifact-cgo/tree/master/section-4.1).
 
 # Evaluation: Section 4.2 to Section 4.5
 
