@@ -57,7 +57,7 @@ out that there should be `269,113` keys. Check by running `redis-cli dbsize`
 We are now finally ready to test precision of each dataflow fact
 evaluated in Table 1.
 
-#### Set Memory Limit
+### Set Memory Limit
 We recommend setting memory limit, so that your machine does not hang
 by using the entire swap space. The precision testing experiment
 consumes a lot of memory. For instance, we set the memory limit to
@@ -65,7 +65,7 @@ consumes a lot of memory. For instance, we set the memory limit to
 ```
 $ ulimit -Sv 2000000
 ```
-#### Set Execution Time
+### Set Execution Time
 We also limit execution time of `souper-check` and `Z3` in `crontab`
 to keep running these experiments at a faster pace.
 ```
@@ -74,7 +74,7 @@ $ crontab -e
 */5 * * * *  killall -u jubi -older-than 15m z3
 ```
 
-#### Run Precision Testing Script
+### Run Precision Testing Script
 - For known bits dataflow fact:
 ```
 $ $HOME/souper/build/cache_dfa --knownbits > known.txt
