@@ -20,7 +20,6 @@ can be tested quickly once you have
 build Souper and LLVM+Clang-8.0.
 
 # Requirements
-==============
 
 Souper should run on a modern Linux or OSX machine.
 The requirements for different tools and compiler
@@ -63,5 +62,16 @@ are ass follows:
   instructions to build [here](https://redis.io/download#installation). 
 
 # Building Souper
+
+Follow the steps:
+
+```
+git clone https://github.com/jubitaneja/souper.git
+cd souper
+git checkout cgo
+mkdir build && cd build
+cmake .. -G Ninja
+ninja
+```
 
 # Running Souper
