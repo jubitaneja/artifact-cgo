@@ -25,21 +25,6 @@ Souper should run on a modern Linux or OSX machine.
 The requirements for different tools and compiler
 are ass follows:
 
-### CMake
-  You need CMake to build Souper and its dependencies. Our work
-  used cmake version 3.10.2. If you want to build CMake
-  from source, you can download the source [here](https://cmake.org/download/).
-  Follow the instructions in README.txt file to build.
-
-### re2c
-  In case your machine does not have re2c package
-  installed, you can download the source from
-  [here](https://github.com/skvadrik/re2c/releases/tag/1.0.1).
-  Our work used re2c version: 1.0.1.
-  Follow the instructions in [README file](https://github.com/skvadrik/re2c#build)
-  to configure and build re2c.
-
-
 ### Z3
   To run Souper over a bitcode file, you will need an SMT
   solver. Our work has used Z3 solver version 4.8.6. 
@@ -49,11 +34,19 @@ are ass follows:
   [README file](https://github.com/Z3Prover/z3#building-z3-using-make-and-gccclang)
   to build Z3.
 
-### clang
+### Clang
   You will need a modern toolchain for building Souper. LLVM
   has instructions on how to get one for Linux
   [here](http://llvm.org/docs/GettingStarted.html#getting-a-modern-host-c-toolchain).
   Our work used clang-7.0.1 to build Souper.
+
+### Re2c
+  In case your machine does not have re2c package
+  installed, you can download the source from
+  [here](https://github.com/skvadrik/re2c/releases/tag/1.0.1).
+  Our work used re2c version: 1.0.1.
+  Follow the instructions in [README file](https://github.com/skvadrik/re2c#build)
+  to configure and build re2c.
 
 ### Redis
   Our work requires caching the Souper queries results using Redis.
@@ -61,17 +54,41 @@ are ass follows:
   the source code [here](https://redis.io/download). Follow the
   instructions to build [here](https://redis.io/download#installation). 
 
+### CMake
+  You need CMake to build Souper and its dependencies. Our work
+  used cmake version 3.10.2. If you want to build CMake
+  from source, you can download the source [here](https://cmake.org/download/).
+  Follow the instructions in README.txt file to build.
+
+
 # Building Souper
 
 Follow the steps:
 
 ```
+cd $HOME
 git clone https://github.com/jubitaneja/souper.git
-cd souper
+cd $HOME/souper
 git checkout cgo
-mkdir build && cd build
+./build_deps.sh
+mkdir $HOME/souper/build && cd $HOME/souper/build
 cmake .. -G Ninja
 ninja
 ```
 
-# Running Souper
+You can find the compiled *souper* binary in `$HOME/souper/build` directory,
+and *clang* binary in `$HOME/souper/third_party/llvm/Release/bin/` directory.
+
+# Evaluation: Section 4.1
+
+# Evaluation: Section 4.2
+
+# Evaluation: Section 4.3
+
+# Evaluation: Section 4.4
+
+# Evaluation: Section 4.5
+
+# Evaluation: Section 4.6
+
+
