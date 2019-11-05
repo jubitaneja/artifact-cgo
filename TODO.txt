@@ -1,0 +1,12 @@
+For Artifact submission
+===========================
+
+1. Section 4.1 (Table 1) - precision testing of SPEC
+2. Section 4.2 to 4.5 (Examples of Souper is more precise than LLVM)
+3. Section 4.6 (Table 2) - Performance results of gzip/bzip2/sqlite/stockfish
+   - Update the entire Table 2:
+     a. After we support range, Demanded bits in perf. test
+     b. After the we make default calls to llvm's dfaa instead of doing nothing.
+     c. SPEC performance evaluation.
+4. Section 4.7 (Soundness bugs) - make forward-ported patches for bugs.
+5. Section 4.8 - Share links of improvements made by Souper in LLVM's dfa.
