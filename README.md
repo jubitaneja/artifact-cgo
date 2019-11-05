@@ -81,13 +81,12 @@ and *clang* binary in `$HOME/souper/third_party/llvm/Release/bin/` directory.
 
 # Evaluation: Section 4.1
 
-# Evaluation: Section 4.2
+Follow the instructions
+[here](https://github.com/jubitaneja/artifact-cgo/blob/master/section-4.1/README.md).
 
-# Evaluation: Section 4.3
+# Evaluation: Section 4.2 to Section 4.5
 
-# Evaluation: Section 4.4
-
-# Evaluation: Section 4.5
+Run the script [here](https://github.com/jubitaneja/artifact-cgo/blob/master/run.sh).
 
 # Evaluation: Section 4.6
 
