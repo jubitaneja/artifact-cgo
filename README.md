@@ -28,11 +28,20 @@ are ass follows:
 ### Z3
   To run Souper over a bitcode file, you will need an SMT
   solver. Our work has used Z3 solver version 4.8.6. 
+  ```
+  $ z3 --version
+  Z3 version 4.8.6 - 64 bit
+  ```
   You can download the source from
   [here](https://github.com/Z3Prover/z3/releases/tag/z3-4.8.6).
   Follow the instructions in
   [README file](https://github.com/Z3Prover/z3#building-z3-using-make-and-gccclang)
   to build Z3.
+
+  *Tip:* Make sure to export Z3 binary path in `PATH` environment variable.
+  ```
+  export PATH=/path/to/z3:$PATH
+  ```
 
 ### Clang
   You will need a modern toolchain for building Souper. LLVM
@@ -40,11 +49,20 @@ are ass follows:
   [here](http://llvm.org/docs/GettingStarted.html#getting-a-modern-host-c-toolchain).
   Our work used clang-7.0.1 to build Souper.
 
+  ```
+  $ clang --version
+  clang version 7.0.1
+  ```
+
 ### Re2c
   In case your machine does not have re2c package
   installed, you can download the source from
   [here](https://github.com/skvadrik/re2c/releases/tag/1.0.1).
   Our work used re2c version: 1.0.1.
+  ```
+  $ re2c --version
+  re2c 1.0.1
+  ```
   Follow the instructions in [README file](https://github.com/skvadrik/re2c#build)
   to configure and build re2c.
 
@@ -59,7 +77,15 @@ are ass follows:
   used cmake version 3.10.2. If you want to build CMake
   from source, you can download the source [here](https://cmake.org/download/).
   Follow the instructions in README.txt file to build.
-
+  ```
+  $ cmake --version
+  cmake version 3.10.2
+  ```
+*Tip:* Make sure to export Z3, clang, cmake, redis, re2c binaries path
+in `PATH` environment variable.
+```
+$ export PATH=/path/to/z3:/path/to/cmake:/path/to/re2c:/path/to/redis-server:/path/to/clang:%PATH
+```
 
 # Building Souper
 
