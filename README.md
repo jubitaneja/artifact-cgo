@@ -1,25 +1,39 @@
 This repository guides you to build and test
-our work we submitted to CGO 2020.
+our work that we submitted to **CGO 2020**.
 
-This detailed guide will help you setup a
-testing environment to evaluate Sections 4.1
-to 4.5.
+There are two ways you can reproduce the results.
+- Following the instructions to use a pre-compiled docker image.
+- Following the instructions to build from scratch.
 
-- We have also provided the docker image to
-save a lot of building/testing time as our
-experiments shown in Table 1 take ~40 hours
-to test precision of each dataflow fact
-on SPEC CPU 2017 benchmark.
+For your reference, we want to inform you that all our work
+is open source. You can build it easily with some assumptions
+on pre-requisites listed further. The results shown
+in Table 1 and 2 (in paper) are time consuming.
 
-- The results shown in Table 2 takes around
-an hour to 70 hours to build different
-applications for performance testing.
+To give you an idea on evaluation time, for testing SPEC
+CPU 2017 benchmark for precision testing experiment, it
+takes ~10 hours to ~40 hours on a machine with two
+28-core Xeon processors.
 
-- The results shown in Section 4.2 to 4.5
-can be tested quickly once you have
-build Souper and LLVM+Clang-8.0.
+The performance evaluation experiment requires building
+applications like, Gzip, Bzip2, Stockfish, and SQLite.
+It takes from a couple of hours for Bzip2 to
+~70 hours for SQLite.
 
-# Requirements
+**In case, you have any time constraints, we recommend
+you to pull the docker image especially for performance
+evaluation experiment.**
+
+# Using Docker Image
+
+## Requirements
+
+### Docker
+### SPEC CPU Benchmark 2017
+
+# Building from scratch
+
+## Requirements
 
 Souper should run on a modern Linux or OSX machine.
 The requirements for different tools and compiler
@@ -87,7 +101,7 @@ in `PATH` environment variable.
 $ export PATH=/path/to/z3:/path/to/cmake:/path/to/re2c:/path/to/redis-server:/path/to/clang:%PATH
 ```
 
-# Building Souper
+## Building Souper
 
 Follow the steps:
 
@@ -105,15 +119,15 @@ $ ninja
 You can find the compiled *souper* binary in `$HOME/souper/build` directory,
 and *clang* binary in `$HOME/souper/third_party/llvm/Release/bin/` directory.
 
-# Evaluation: Section 4.1
+## Evaluation: Section 4.1
 
 Follow the instructions
 [here](https://github.com/jubitaneja/artifact-cgo/tree/master/section-4.1).
 
-# Evaluation: Section 4.2 to Section 4.5
+## Evaluation: Section 4.2 to Section 4.5
 
 Run the script [here](https://github.com/jubitaneja/artifact-cgo/blob/master/run.sh).
 
-# Evaluation: Section 4.6
+## Evaluation: Section 4.6
 
 
