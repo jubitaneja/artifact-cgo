@@ -71,6 +71,65 @@ This command will load and run the docker image, and `-it`
 option attaches you an interactive tty container.
 
 3. Evaluate the experiments.
+```
+$ cd /usr/src/artifact-cgo
+```
+This directory contains the entire setup of our tool.
+
+### Evaluation: Section 4.1
+This section makes use of SPEC CPU 2017 benchmark
+that we cannot share directly in the docker image.
+For this, you will need your own ISO image and follow
+the instructions [here](https://github.com/jubitaneja/artifact-cgo#building-from-scratch)
+to reproduce the results.
+
+### Evaluation: Section 4.2 to 4.5
+These sections evaluates the precision of several
+dataflow analyses as shown in examples in the paper.
+Runt the script to reproduce the results.
+```
+$ cd /usr/src/artifact-cgo/precision/test
+$ ./run.sh
+```
+
+### Evaluation: Section 4.6
+This section measures the impact of precision
+of dataflow analysis. We test compression
+applications, like Bzip2, bzip; SQLite;
+and a chess engine, Stockfish as shown
+presented in Table 2 in paper.
+
+**NOTE:** In paper, to test the performance of gzip and bzip2,
+we compressed the 2.9 GB ISO image for SPEC CPU 2017,
+and decompressed the resulting compressed file.
+However, for the artifact evaluation purpose
+we cannot distribute SPEC ISO image. We modified
+this experiment setting by generating a random
+1GB file using `dd` utility.
+
+Run the script to reproduce the results for all applications.
+```
+$ cd /usr/src/artifact-cgo/performance/test
+$ ./main.sh
+```
+
+The results are saved in:
+- bzip2: result-bzip2.txt
+- gzip: result-gzip.txt
+- stockfish: result-stockfish.txt
+- sqlite: result-sqlite.txt
+
+The speedup numbers may vary depending on which
+architecture you are using, and what is the configuration
+of the processor.
+
+### Evaluation: Section 4.7
+This sections evaluates three soundness bugs
+as discussed in the paper. Run the script:
+```
+$ cd /usr/src/artifact-cgo/soundness/test
+$ ./sound-test.sh
+```
 
 # Building from scratch
 
