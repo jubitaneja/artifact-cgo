@@ -27,11 +27,53 @@ evaluation experiment.**
 # Using Docker Image
 
 ## Requirements
+Souper should run on a modern Linux or OSX machine.
+We tested our work on Ubuntu-18.04 version. Check
+Ubuntu version:
+```
+$ lsb_release -a
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description:    Ubuntu 18.04.3 LTS
+Release:        18.04
+Codename:       bionic
+```
 
 ### Docker
+Install docker engine by following the instructions
+[here](https://docs.docker.com/install/linux/docker-ce/ubuntu/).
+
 ### SPEC CPU Benchmark 2017
+Our evaluation involves [SPEC CPU 2017](https://www.spec.org/cpu2017/)
+benchmark. We cannot provide a copy of this benchmark as restricted
+by the SPEC License Agreement. For details, check
+[this](https://www.spec.org/cpu2017/docs/licenses.html).
+
+For Table 1 in paper, we assume you have SPEC ISO image, version 1.0.1.
+
+### Steps to follow
+1. Fetch the docker image from docker hub.
+```
+$ docker pull jubitaneja/artifact-cgo:latest
+```
+To check the list of images, run:
+```
+$ docker images
+REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
+jubitaneja/artifact-cgo   latest              d5bc1be66342        2 hours ago         14.2GB
+```
+
+2. Run the docker image.
+```
+$ docker run -it jubitaneja/artifact-cgo /bin/bash
+```
+This command will load and run the docker image, and `-it`
+option attaches you an interactive tty container.
+
+3. Evaluate the experiments.
 
 # Building from scratch
+
 
 ## Requirements
 
