@@ -71,6 +71,8 @@ This command will load and run the docker image, and `-it`
 option attaches you an interactive tty container.
 
 3. Evaluate the experiments.
+After you have successfully run the docker image, you can
+go the path:
 ```
 $ cd /usr/src/artifact-cgo
 ```
