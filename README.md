@@ -226,7 +226,7 @@ $ ./build_souper_precision.sh
 ```
 
 You can find the compiled **`souper`** binary in `$CGO_HOME/scratch/precision/souper/build` directory,
-and **clang** binary in `$CGO_HOME/scratch/precision/souper/third_party/llvm/Release/bin/` directory.
+and **`clang`** binary in `$CGO_HOME/scratch/precision/souper/third_party/llvm/Release/bin/` directory.
 
 ## Evaluation: Section 4.1
 
