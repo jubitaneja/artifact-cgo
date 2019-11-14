@@ -149,28 +149,27 @@ Release:        18.04
 Codename:       bionic
 ```
 
-The requirements for different tools and compiler
-are ass follows:
+There are certain requirements for different
+tools and compiler. For this, you can either run the
+`prepare-req.sh` script or follow the instructions
+for each pre-requisite separately.
 
-### Z3
-  To run Souper over a bitcode file, you will need an SMT
-  solver. Our work has used Z3 solver version 4.8.6. 
-  ```
-  $ z3 --version
-  Z3 version 4.8.6 - 64 bit
-  ```
-  You can download the source from
-  [here](https://github.com/Z3Prover/z3/releases/tag/z3-4.8.6).
-  Follow the instructions in
-  [README file](https://github.com/Z3Prover/z3#building-z3-using-make-and-gccclang)
-  to build Z3.
-
-  *Tip:* Make sure to export Z3 binary path in `PATH` environment variable.
-  ```
-  export PATH=/path/to/z3:$PATH
-  ```
-
-### Clang
+The script may require you to switch to `sudo`,
+as it installs some packages from `apt-get` package
+manager.
+```
+$ cd $(pwd)/artifact-cgo
+$ export CGO_HOME=$(pwd)
+$ sudo ./prepare-req.sh
+```
+or, follow the initial steps, and start building the tools:
+```
+$ cd $(pwd)/artifact-cgo
+$ export CGO_HOME=${PWD}
+$ mkdir -p ${CGO_HOME}/scratch/tools
+$ cd ${CGO_HOME}/scratch/tools
+```
+### Requirement 1: Clang
   You will need a modern toolchain for building Souper. LLVM
   has instructions on how to get one for Linux
   [here](http://llvm.org/docs/GettingStarted.html#getting-a-modern-host-c-toolchain).
@@ -181,7 +180,8 @@ are ass follows:
   clang version 7.0.1
   ```
 
-### Re2c
+
+### Requirement 2: Re2c
   In case your machine does not have re2c package
   installed, you can download the source from
   [here](https://github.com/skvadrik/re2c/releases/tag/1.0.1).
@@ -193,13 +193,13 @@ are ass follows:
   Follow the instructions in [README file](https://github.com/skvadrik/re2c#build)
   to configure and build re2c.
 
-### Redis
+### Requirement 3: Redis
   Our work requires caching the Souper queries results using Redis.
-  We used redis version >= 4.0.9 for our work. You can download
+  We used redis version 5.0.3  for our work. You can download
   the source code [here](https://redis.io/download). Follow the
   instructions to build [here](https://redis.io/download#installation). 
 
-### CMake
+### Requirement 4: CMake
   You need CMake to build Souper and its dependencies. Our work
   used cmake version 3.10.2. If you want to build CMake
   from source, you can download the source [here](https://cmake.org/download/).
@@ -208,29 +208,25 @@ are ass follows:
   $ cmake --version
   cmake version 3.10.2
   ```
-*Tip:* Make sure to export Z3, clang, cmake, redis, re2c binaries path
+*Tip:* Make sure to export clang, cmake, redis, re2c binaries path
 in `PATH` environment variable.
 ```
-$ export PATH=/path/to/z3:/path/to/cmake:/path/to/re2c:/path/to/redis-server:/path/to/clang:%PATH
+$ export PATH=/path/to/cmake:/path/to/re2c:/path/to/redis-server:/path/to/clang:%PATH
 ```
 
 ## Building Souper
 
-Follow the steps:
+After all pre-requisties have been installed,
+follow the steps to build Souper for precision testing
+experiment.
 
 ```
-$ cd $HOME
-$ git clone https://github.com/jubitaneja/souper.git
-$ cd $HOME/souper
-$ git checkout cgo
-$ ./build_deps.sh
-$ mkdir $HOME/souper/build && cd $HOME/souper/build
-$ cmake .. -G Ninja
-$ ninja
+$ cd ${CGO_HOME}
+$ ./build_souper_precision.sh
 ```
 
-You can find the compiled *souper* binary in `$HOME/souper/build` directory,
-and *clang* binary in `$HOME/souper/third_party/llvm/Release/bin/` directory.
+You can find the compiled **`souper`** binary in `$CGO_HOME/scratch/precision/souper/build` directory,
+and **clang** binary in `$CGO_HOME/scratch/precision/souper/third_party/llvm/Release/bin/` directory.
 
 ## Evaluation: Section 4.1
 
