@@ -24,7 +24,7 @@ It takes from a couple of hours for Bzip2 to
 you to pull the docker image especially for performance
 evaluation experiment.**
 
-# Using Docker Image
+# Approach 1: Using Docker Image
 
 ## Requirements
 Souper should run on a modern Linux or OSX machine.
@@ -133,7 +133,7 @@ $ cd /usr/src/artifact-cgo/soundness/test
 $ ./sound-test.sh
 ```
 
-# Building from scratch
+# Approach 2: Building from scratch
 
 
 ## Requirements
