@@ -5,14 +5,15 @@ harvested by Souper, we compare the dataflow
 facts computed by precise algorithms written by
 us against what an LLVM compiler computes.
 
-Note: You have already built Souper for
+Note: We assume that you have already built Souper for
 precision testing by running `build_souper_precision.sh`
 script [here](https://github.com/jubitaneja/artifact-cgo#building-souper).
-So, no need to do that again!
+So, no need to do that again! If not, please go back and
+follow the instructions.
 
-While you go ahead and follow the instructions
+As you go ahead and follow the instructions
 to build SPEC benchmark, at one point you
-will be instructed to specify the path of `sclang`
+will be asked to specify the path of `sclang`
 binary. Don't feel lost here! :) You simply
 have to specify the absolute path of this
 binary which is compiled at
