@@ -1,10 +1,31 @@
+**Main Idea:** For the evaluation of Section 4.1, we compile
+SPEC CPU 2017 benchmark with Souper. We cache
+the Souper expressions in Redis. For each expression
+harvested by Souper, we compare the dataflow
+facts computed by precise algorithms written by
+us against what an LLVM compiler computes.
+
+Note: You have already built Souper for
+precision testing by running `build_souper_precision.sh`
+script [here](https://github.com/jubitaneja/artifact-cgo#building-souper).
+So, no need to do that again!
+
+While you go ahead and follow the instructions
+to build SPEC benchmark, at one point you
+will be instructed to specify the path of `sclang`
+binary. Don't feel lost here! :) You simply
+have to specify the absolute path of this
+binary which is compiled at
+`artifact-cgo/scratch/precision/souper/build/sclang`
+
+Well, you don't have to memorize this, we wanted
+to mention it ahead-of-time as well.
+
 # Build and Install SPEC CPU 2017
 
 As mentioned earlier that we cannot share the SPEC ISO
 image directly. We are assuming that you have the SPEC
-ISO version 1.0.1 image.
-
-- Follow the steps:
+ISO version 1.0.1 image. Follow the steps:
 
 + `CGO_HOME` refers to `artifact-cgo` directory.
 ```
@@ -57,7 +78,7 @@ $ redis-cli flushall
 $ redis-cli shutdown
 $ rm /path/to/dump.rdb
 ```
-If you shutdown the redis-server, invoke it again for our exeriment.
+If you shutdown the redis-server, invoke it again for this experiment.
 
 # Set Souper environment variables
 
@@ -105,45 +126,66 @@ $ crontab -e
 ```
 
 ### Run Precision Testing Script
+
+When you run each script (recommend, one at a time only),
+it generates thousands of small files containing the results
+computed by Souper and LLVM. So, for clean usage and
+understanding later on, create separate directories and run
+scripts in that so that you can always have separate results.
+
 - For known bits dataflow fact:
 ```
-$ $souper_prec/souper/build/cache_dfa --knownbits > known.txt
+$ mkdir known && cd known
+$ $souper_prec/souper/build/cache_dfa --knownbits
 ```
+You will see filenames starting with `knownbits_*`
 
 - For negative dataflow fact:
 ```
-$ $souper_prec/souper/build/cache_dfa --neg > negative.txt
+$ mkdir neg && cd neg
+$ $souper_prec/souper/build/cache_dfa --neg
 ```
 
 - For non-negative dataflow fact:
 ```
-$ $souper_prec/souper/build/cache_dfa --nonneg > non-negative.txt
+$ mkdir non-neg && cd non-neg
+$ $souper_prec/souper/build/cache_dfa --nonneg
 ```
 
 - For non-zero dataflow fact:
 ```
-$ $souper_prec/souper/build/cache_dfa --nonzero > non-zero.txt
+$ mkdir non-zero && cd non-zero
+$ $souper_prec/souper/build/cache_dfa --nonzero
 ```
 
 - For power of two dataflow fact:
 ```
-$ $souper_prec/souper/build/cache_dfa --power > power.txt
+$ mkdir power && cd power
+$ $souper_prec/souper/build/cache_dfa --power
 ```
 
 - For number of sign bits dataflow fact:
 ```
-$ $souper_prec/souper/build/cache_dfa --signBits > signBits.txt
+$ mkdir signbits && cd signbits
+$ $souper_prec/souper/build/cache_dfa --signBits
 ```
 
 - For range dataflow fact:
 ```
-$ $souper_prec/souper/build/cache_range > range.txt
+$ mkdir range && cd range
+$ $souper_prec/souper/build/cache_range
 ```
 
 - For demanded bits dataflow fact:
 ```
-$ $souper_prec/souper/build/cache_demandedbits > db.txt
+$ mkdir db && cd db
+$ $souper_prec/souper/build/cache_demandedbits
 ```
 
-### Process the results 
+### Process/Analyze the results 
+
+You can now count the number of `llvm is stronger`,
+`souper is stronger`, `timeout` cases for each dataflow
+fact.
+
 
