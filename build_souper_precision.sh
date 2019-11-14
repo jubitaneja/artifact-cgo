@@ -7,7 +7,7 @@ souper_src_dir=$(pwd)/scratch/precision/souper
 souper_build_dir=$(pwd)/scratch/precision/souper/build
 build_type=Release
 
-git clone $souper_rep $souper_src_dir
+git clone $souper_repo $souper_src_dir
 cd $souper_src_dir
 git checkout $souper_branch
 ./build_deps.sh $build_type

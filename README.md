@@ -235,8 +235,12 @@ Follow the instructions
 
 ## Evaluation: Section 4.2 to Section 4.5
 
-Run the script [here](https://github.com/jubitaneja/artifact-cgo/blob/master/run.sh).
+Run the script `test_precision.sh`
 
+```
+$ cd ${CGO_HOME}
+$ ./test_precision.sh
+```
 ## Evaluation: Section 4.6
 
 
