@@ -28,7 +28,7 @@ range_test_cases=$CGO_HOME/section-4.5
 souper_range_arg="-infer-range -souper-range-max-precise "
 llvm_range_arg="-print-range-at-return -souper-range-max-tries=300"
 
-z3_path=$CGO_HOME/third_party/z3-install/bin/z3
+z3_path=$souper_prec/third_party/z3-install/bin/z3
 SOUPER_SOLVER="-z3-path=$z3_path"
 
 echo "===========================================";

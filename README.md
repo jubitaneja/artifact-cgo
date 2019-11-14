@@ -236,13 +236,22 @@ Follow the instructions
 ## Evaluation: Section 4.2 to Section 4.5
 
 Run the script `test_precision.sh`
-
 ```
 $ cd ${CGO_HOME}
 $ ./test_precision.sh
 ```
+
 ## Evaluation: Section 4.6
 
+## Evaluation: Section 4.7
+
+Build souper to reproduce soundness bugs, and then
+run the `test_sound.sh` script to test bugs.
+```
+$ cd ${CGO_HOME}
+$ ./build_souper_sound.sh
+$ ./test_sound.sh
+```
 
 # How to use our tool for extended testing?
 
