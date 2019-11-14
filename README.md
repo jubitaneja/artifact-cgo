@@ -54,18 +54,18 @@ For Table 1 in paper, we assume you have SPEC ISO image, version 1.0.1.
 ### Steps to follow
 1. Fetch the docker image from docker hub.
 ```
-$ docker pull jubitaneja/artifact-cgo:latest
+$ sudo docker pull jubitaneja/artifact-cgo:latest
 ```
 To check the list of images, run:
 ```
-$ docker images
+$ sudo docker images
 REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
 jubitaneja/artifact-cgo   latest              d5bc1be66342        2 hours ago         14.2GB
 ```
 
 2. Run the docker image.
 ```
-$ docker run -it jubitaneja/artifact-cgo /bin/bash
+$ sudo docker run -it jubitaneja/artifact-cgo /bin/bash
 ```
 This command will load and run the docker image, and `-it`
 option attaches you an interactive tty container.
@@ -139,6 +139,16 @@ $ ./sound-test.sh
 ## Requirements
 
 Souper should run on a modern Linux or OSX machine.
+We used Ubuntu-18.04 for our work. Check Ubuntu version:
+```
+$ lsb_release -a
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description:    Ubuntu 18.04.3 LTS
+Release:        18.04
+Codename:       bionic
+```
+
 The requirements for different tools and compiler
 are ass follows:
 
@@ -233,4 +243,6 @@ Run the script [here](https://github.com/jubitaneja/artifact-cgo/blob/master/run
 
 ## Evaluation: Section 4.6
 
+
+# How to use our tool for extended testing?
 
