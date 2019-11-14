@@ -82,7 +82,7 @@ This directory contains the entire setup of our tool.
 This section makes use of SPEC CPU 2017 benchmark
 that we cannot share directly in the docker image.
 For this, you will need your own ISO image and follow
-the instructions [here](https://github.com/jubitaneja/artifact-cgo#building-from-scratch)
+the instructions [here](https://github.com/jubitaneja/artifact-cgo#evaluation-section-41-1)
 to reproduce the results.
 
 ### Evaluation: Section 4.2 to 4.5
@@ -170,6 +170,7 @@ $ mkdir -p ${CGO_HOME}/scratch/tools
 $ cd ${CGO_HOME}/scratch/tools
 ```
 - **Requirement 1: Clang**
+
   You will need a modern toolchain for building Souper. LLVM
   has instructions on how to get one for Linux
   [here](http://llvm.org/docs/GettingStarted.html#getting-a-modern-host-c-toolchain).
@@ -182,6 +183,7 @@ $ cd ${CGO_HOME}/scratch/tools
 
 
 - **Requirement 2: Re2c**
+
   In case your machine does not have re2c package
   installed, you can download the source from
   [here](https://github.com/skvadrik/re2c/releases/tag/1.0.1).
@@ -194,12 +196,14 @@ $ cd ${CGO_HOME}/scratch/tools
   to configure and build re2c.
 
 - **Requirement 3: Redis**
+
   Our work requires caching the Souper queries results using Redis.
   We used redis version 5.0.3  for our work. You can download
   the source code [here](https://redis.io/download). Follow the
   instructions to build [here](https://redis.io/download#installation). 
 
 - **Requirement 4: CMake**
+
   You need CMake to build Souper and its dependencies. Our work
   used cmake version 3.10.2. If you want to build CMake
   from source, you can download the source [here](https://cmake.org/download/).
