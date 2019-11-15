@@ -19,13 +19,12 @@ $ gzip -d -f ${CGO_HOME}/scratch/performance/test/db.sq.gz > ${CGO_HOME}/scratch
 ## Evaluation: gzip
 
 ```
-$ mkdir -p ${CGO_HOME}/scratch/performance/test/gzip/precise
-$ mkdir -p ${CGO_HOME}/scratch/performance/test/gzip/baseline
+$ mkdir -p ${CGO_HOME}/scratch/performance/test/gzip
 $ cd ${CGO_HOME}/scratch/performance/test/gzip
 $ wget http://ftp.gnu.org/gnu/gzip/gzip-1.10.tar.gz
 $ tar xvf gzip-1.10.tar.gz
 $ cp -r gzip-1.10 baseline
-$ mv gzip-1.10 precice
+$ mv gzip-1.10 precise
 
 $ cd ${CGO_HOME}/scratch/performance/test/gzip/precise
 $ time make -j32 CC=${CGO_HOME}/scratch/performance/build/bin/clang CFLAGS="-O3 -z3_path=${Z3_PATH}"
@@ -46,7 +45,7 @@ $ cd ${CGO_HOME}/scratch/performance/test/bz2
 $ wget https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
 $ tar xvf bzip2-1.0.8.tar.gz
 $ cp -r bzip2-1.0.8 baseline
-$ mv bzip2-1.0.8 precice
+$ mv bzip2-1.0.8 precise
 
 $ cd ${CGO_HOME}/scratch/performance/test/bz2/precise
 $ time make $CC=${CGO_HOME}/scratch/performance/build/bin/clang CFLAGS="-Wall -Winline -O3 -g -D_FILE_OFFSET_BITS=64 -z3_path=${Z3_PATH}"
