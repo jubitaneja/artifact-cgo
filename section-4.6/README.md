@@ -4,6 +4,8 @@ Performance evaluation
 $ cd ${CGO_HOME}
 $ ./build_souper_performance.sh
 $ export Z3_PATH=${CGO_HOME}/scratch/performance/souper/third_party/z3-install/bin/z3
+
+dd if=/dev/urandom bs=1M count=512 of={CGO_HOME}/scratch/performance/test/512mb
 ```
 
 
@@ -23,6 +25,10 @@ $ time make -j32 CC=${CGO_HOME}/scratch/performance/build/bin/clang CFLAGS="-O3 
 
 $ cd {CGO_HOME}/scratch/performance/test/gzip/baseline
 $ time make -j32 CC=${CGO_HOME}/scratch/performance/baseline/bin/clang CFLAGS="-O3"
+
+$ for i in {1..3}; do {CGO_HOME}/scratch/performance/test/gzip/precise/gzip -f -k {CGO_HOME}/scratch/performance/test/512mb ; done
+$ for i in {1..3}; do {CGO_HOME}/scratch/performance/test/gzip/baseline/gzip -f -k {CGO_HOME}/scratch/performance/test/512mb ; done
+
 ```
 
 ## Evaluation: bzip2
@@ -40,6 +46,9 @@ $ time make CC=${CGO_HOME}/scratch/performance/build/bin/clang CFLAGS="-Wall -Wi
 
 $ cd {CGO_HOME}/scratch/performance/test/bz2/baseline
 $ time make CC=${CGO_HOME}/scratch/performance/baseline/bin/clang CFLAGS="-Wall -Winline -O3 -g -D_FILE_OFFSET_BITS=64"
+
+$ for i in {1..3}; do {CGO_HOME}/scratch/performance/test/bz2/precise/bzip2 -f -k {CGO_HOME}/scratch/performance/test/512mb ; done
+$ for i in {1..3}; do {CGO_HOME}/scratch/performance/test/bz2/baseline/bzip2 -f -k {CGO_HOME}/scratch/performance/test/512mb ; done
 ```
 
 # Evaluation: stockfish
