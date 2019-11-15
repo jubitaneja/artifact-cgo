@@ -94,6 +94,8 @@ $ cd /usr/src/artifact-cgo/precision/test
 $ ./run.sh
 ```
 
+#### Understanding the results
+
 ### Evaluation: Section 4.6
 This section measures the impact of precision
 of dataflow analysis. We test compression
@@ -115,6 +117,7 @@ $ cd /usr/src/artifact-cgo/performance/test
 $ ./main.sh
 ```
 
+#### Understanding the results
 The results are saved in:
 - bzip2: result-bzip2.txt
 - gzip: result-gzip.txt
@@ -132,6 +135,8 @@ as discussed in the paper. Run the script:
 $ cd /usr/src/artifact-cgo/soundness/test
 $ ./sound-test.sh
 ```
+
+#### Understanding the results
 
 # Approach 2: Building from scratch
 
@@ -232,8 +237,10 @@ Run the script `test_precision.sh`
 $ cd ${CGO_HOME}
 $ ./test_precision.sh
 ```
+#### Understanding the results
 
 ## Evaluation: Section 4.6
+Follow the instructions [here](https://github.com/jubitaneja/artifact-cgo/tree/master/section-4.6).
 
 ## Evaluation: Section 4.7
 
@@ -245,5 +252,7 @@ $ ./build_souper_sound.sh
 $ ./test_sound.sh
 ```
 
-# How to use our tool for extended testing?
+#### Understanding the results
+
+# Customization: How to use our tool for extended testing?
 

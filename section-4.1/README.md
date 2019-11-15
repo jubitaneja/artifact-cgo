@@ -183,7 +183,7 @@ $ mkdir db && cd db
 $ $souper_prec/souper/build/cache_demandedbits
 ```
 
-### Process/Analyze the results 
+### Understanding the results
 
 You can now count the number of `llvm is stronger`,
 `souper is stronger`, `timeout` cases for each dataflow
