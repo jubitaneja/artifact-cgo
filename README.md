@@ -168,7 +168,7 @@ $ ./prepare-req.sh
 
 Follow the initial steps, and start building the tools:
 ```
-$ cd $(pwd)/artifact-cgo
+$ git clone https://github.com/jubitaneja/artifact-cgo.git && cd artifact-cgo
 $ export CGO_HOME=${PWD}
 $ mkdir -p ${CGO_HOME}/scratch/tools
 $ cd ${CGO_HOME}/scratch/tools
