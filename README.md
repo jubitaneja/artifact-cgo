@@ -173,20 +173,7 @@ $ export CGO_HOME=${PWD}
 $ mkdir -p ${CGO_HOME}/scratch/tools
 $ cd ${CGO_HOME}/scratch/tools
 ```
-- **Requirement 1: Clang**
-
-  You will need a modern toolchain for building Souper. LLVM
-  has instructions on how to get one for Linux
-  [here](http://llvm.org/docs/GettingStarted.html#getting-a-modern-host-c-toolchain).
-  Our work used clang-7.0.1 to build Souper.
-
-  ```
-  $ clang --version
-  clang version 7.0.1
-  ```
-
-
-- **Requirement 2: Re2c**
+- **Requirement 1: Re2c**
 
   In case your machine does not have re2c package
   installed, you can download the source from
@@ -199,14 +186,14 @@ $ cd ${CGO_HOME}/scratch/tools
   Follow the instructions in [README file](https://github.com/skvadrik/re2c#build)
   to configure and build re2c.
 
-- **Requirement 3: Redis**
+- **Requirement 2: Redis**
 
   Our work requires caching the Souper queries results using Redis.
   We used redis version 5.0.3  for our work. You can download
   the source code [here](https://redis.io/download). Follow the
   instructions to build [here](https://redis.io/download#installation). 
 
-- **Requirement 4: CMake**
+- **Requirement 3: CMake**
 
   You need CMake to build Souper and its dependencies. Our work
   used cmake version 3.10.2. If you want to build CMake
@@ -216,11 +203,8 @@ $ cd ${CGO_HOME}/scratch/tools
   $ cmake --version
   cmake version 3.10.2
   ```
-*Tip:* Make sure to export clang, cmake, redis, re2c binaries path
-in `PATH` environment variable.
-```
-$ export PATH=/path/to/cmake:/path/to/re2c:/path/to/redis-server:/path/to/clang:%PATH
-```
+...*Tip:* Make sure to export clang, cmake, redis, re2c binaries path
+...in `PATH` environment variable.
 
 ## Building Souper
 
