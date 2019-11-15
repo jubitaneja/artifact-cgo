@@ -99,6 +99,6 @@ $ time ${CGO_HOME}/scratch/performance/build/bin/clang -lpthread -ldl -O3 -o sql
 $ cd ${CGO_HOME}/scratch/performance/test/sqlite3/baseline
 $ time ${CGO_HOME}/scratch/performance/build-baseline/bin/clang -lpthread -ldl -O3 -o sqlite3 sqlite3.c shell.c
 
-$ cat ${CGO_HOME}/scratch/performance/test/test4.sql | time ${CGO_HOME}/scratch/performance/test/sqlite3/precise/sqlite3 ${CGO_HOME}/scratch/performance/test/db.sq > /dev/null
-$ cat ${CGO_HOME}/scratch/performance/test/test4.sql | time ${CGO_HOME}/scratch/performance/test/sqlite3/baseline/sqlite3 ${CGO_HOME}/scratch/performance/test/db.sq > /dev/null
+$ for i in {1..3}; do cat ${CGO_HOME}/scratch/performance/test/test4.sql | time ${CGO_HOME}/scratch/performance/test/sqlite3/precise/sqlite3 ${CGO_HOME}/scratch/performance/test/db.sq > /dev/null ; done
+$ for i in {1..3}; do cat ${CGO_HOME}/scratch/performance/test/test4.sql | time ${CGO_HOME}/scratch/performance/test/sqlite3/baseline/sqlite3 ${CGO_HOME}/scratch/performance/test/db.sq > /dev/null ; done
 ```
