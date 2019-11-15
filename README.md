@@ -143,7 +143,7 @@ We provide references to each one of those
 here.
 
 - Evaluating `x & (x-1)` results in a value that always
-  has the bottom bit cleared [1](https://reviews.llvm.org/rL252629).
+  has the bottom bit cleared [[Ref:1]](https://reviews.llvm.org/rL252629).
 
 - The LLVM byte-swap intrinsic function was not handled by
   known bits analysis earlier. It is fixed now [2](https://reviews.llvm.org/D13250).
