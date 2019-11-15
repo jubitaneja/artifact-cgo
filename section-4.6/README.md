@@ -66,23 +66,26 @@ for i in {1..3}; do {CGO_HOME}/scratch/performance/test/stockfish/baseline/src/s
 
 # Evaluation: sqlite3
 ```
+
 $ mkdir -p {CGO_HOME}/scratch/performance/test/sqlite3/precise
 $ mkdir -p {CGO_HOME}/scratch/performance/test/sqlite3/baseline
 
 $ cd {CGO_HOME}/scratch/performance/test/sqlite3
-$ wget https://stockfishchess.org/files/stockfish-10-src.zip
-$ cp stockfish-10-src.zip precise
-$ cp stockfish-10-src.zip baseline
-$ cd {CGO_HOME}/scratch/performance/test/stockfish/precise && unzip stockfish-10-src.zip
-$ cd {CGO_HOME}/scratch/performance/test/stockfish/baseline && unzip stockfish-10-src.zip
+$ wget https://www.sqlite.org/2019/sqlite-amalgamation-3290000.zip
+$ cp sqlite-amalgamation-3290000.zip precise
+$ cp sqlite-amalgamation-3290000.zip baseline
+$ unzip sqlite-amalgamation-3290000.zip
+$ cp -r sqlite-amalgamation-3290000 baseline
+$ mv sqlite-amalgamation-3290000 precise
 
-$ cd {CGO_HOME}/scratch/performance/test/stockfish/precise
-$ time make build ARCH=x86-64-modern COMPCXX=${CGO_HOME}/scratch/performance/build/bin/clang++
+$ cd {CGO_HOME}/scratch/performance/test/sqlite3/precise
+$ time ${CGO_HOME}/scratch/performance/build/bin/clang -lpthread -ldl -O3 -o sqlite3 sqlite3.c shell.c
 
-$ cd {CGO_HOME}/scratch/performance/test/stockfish/baseline
-$ time make build ARCH=x86-64-modern COMPCXX=${CGO_HOME}/scratch/performance/baseline/bin/clang++
+$ cd {CGO_HOME}/scratch/performance/test/sqlite3/baseline
+$ time ${CGO_HOME}/scratch/performance/baseline/bin/clang -lpthread -ldl -O3 -o sqlite3 sqlite3.c shell.c
 
+$ cd {CGO_HOME}/scratch/performance/test/sqlite3
 
-for i in {1..3}; do {CGO_HOME}/scratch/performance/test/stockfish/precise/src/stockfish bench 1024 1 26 >/dev/null ; done
-for i in {1..3}; do {CGO_HOME}/scratch/performance/test/stockfish/baseline/src/stockfish bench 1024 1 26 >/dev/null ; done
+cat ./test4.sql | time precise/sqlite3 db.sq > /dev/null
+cat ./test4.sql | time baseline/sqlite3 db.sq > /dev/null
 ```
