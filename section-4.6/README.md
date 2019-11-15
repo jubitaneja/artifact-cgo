@@ -2,6 +2,8 @@ Performance evaluation
 
 ## Preparation
 
+Make sure you have already evaluted the script prepare-req.sh in ${CGO_HOME}.
+
 ```
 $ cd ${CGO_HOME}
 $ ./build_souper_performance.sh
