@@ -156,13 +156,13 @@ for each pre-requisite separately.
 
 ### Approach 1: Use script
 
-The script may require you to switch to `sudo`,
-as it installs some packages from `apt-get` package
+The script requires `sudo` access to
+install some packages from `apt-get` package
 manager.
 ```
 $ git clone https://github.com/jubitaneja/artifact-cgo.git && cd artifact-cgo
 $ export CGO_HOME=$(pwd)
-$ sudo ./prepare-req.sh
+$ ./prepare-req.sh
 ```
 ### Approach 2: Build manually
 

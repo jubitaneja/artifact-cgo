@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "Install important packages ..."
-apt-get install libgmp10 ca-certificates valgrind libc6-dev libgmp-dev cmake time patch ninja-build make autoconf automake libtool golang-go python subversion re2c git gcc g++ libredis-perl
+sudo apt-get install libgmp10 ca-certificates valgrind libc6-dev libgmp-dev cmake time patch ninja-build make autoconf automake libtool golang-go python subversion re2c git gcc g++ libredis-perl
 
 echo "Install redis ..."
 redis_repo=https://github.com/antirez/redis
