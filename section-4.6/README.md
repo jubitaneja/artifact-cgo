@@ -2,7 +2,7 @@
 
 Make sure you have already evaluted the script prepare-req.sh in ${CGO_HOME}.
 
-```
+```bash
 $ cd ${CGO_HOME}
 $ ./build_souper_performance.sh
 $ export Z3_PATH=${CGO_HOME}/scratch/performance/souper/third_party/z3-install/bin/z3
@@ -19,7 +19,7 @@ $ gzip -d -f ${CGO_HOME}/scratch/performance/test/db.sq.gz > ${CGO_HOME}/scratch
 
 ## Evaluation: gzip
 
-```
+```bash
 $ mkdir -p ${CGO_HOME}/scratch/performance/test/gzip
 $ cd ${CGO_HOME}/scratch/performance/test/gzip
 $ wget http://ftp.gnu.org/gnu/gzip/gzip-1.10.tar.gz
@@ -44,7 +44,7 @@ $ for i in {1..3}; do time ${CGO_HOME}/scratch/performance/test/gzip/baseline/gz
 ```
 
 ## Evaluation: bzip2
-```
+```bash
 $ mkdir -p ${CGO_HOME}/scratch/performance/test/bz2
 $ cd ${CGO_HOME}/scratch/performance/test/bz2
 $ wget https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
@@ -66,7 +66,7 @@ $ for i in {1..3}; do time ${CGO_HOME}/scratch/performance/test/bz2/baseline/bzi
 ```
 
 # Evaluation: stockfish
-```
+```bash
 $ mkdir -p ${CGO_HOME}/scratch/performance/test/stockfish/precise
 $ mkdir -p ${CGO_HOME}/scratch/performance/test/stockfish/baseline
 
@@ -91,7 +91,7 @@ $ for i in {1..3}; do time ${CGO_HOME}/scratch/performance/test/stockfish/baseli
 ```
 
 # Evaluation: sqlite3
-```
+```bash
 
 $ mkdir -p ${CGO_HOME}/scratch/performance/test/sqlite3
 
