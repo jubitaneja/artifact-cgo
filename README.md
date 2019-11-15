@@ -94,8 +94,6 @@ $ cd /usr/src/artifact-cgo/precision/test
 $ ./test_precision.sh
 ```
 
-#### Understanding the results
-
 ### Evaluation: Section 4.6
 This section measures the impact of precision
 of dataflow analysis. We test compression
@@ -116,17 +114,6 @@ Run the script to reproduce the results for all applications.
 $ cd /usr/src/artifact-cgo/performance/test
 $ ./test_performance.sh
 ```
-
-#### Understanding the results
-The results are saved in:
-- bzip2: result-bzip2.txt
-- gzip: result-gzip.txt
-- stockfish: result-stockfish.txt
-- sqlite: result-sqlite.txt
-
-The speedup numbers may vary depending on which
-architecture you are using, and what is the configuration
-of the processor.
 
 ### Evaluation: Section 4.7
 This section evaluates three soundness bugs
@@ -156,8 +143,6 @@ here.
 - Test for equality can be resolved at compile time sometimes using dataflow
   analysis [[Ref:5]](https://reviews.llvm.org/D3868).
 
-
-#### Understanding the results
 
 # Approach 2: Building from scratch
 
@@ -258,7 +243,6 @@ Run the script `test_precision.sh`
 $ cd ${CGO_HOME}
 $ ./test_precision.sh
 ```
-#### Understanding the results
 
 ## Evaluation: Section 4.6
 Follow the instructions [here](https://github.com/jubitaneja/artifact-cgo/tree/master/section-4.6).
@@ -273,7 +257,17 @@ $ ./build_souper_sound.sh
 $ ./test_sound.sh
 ```
 
-#### Understanding the results
+# Understanding the results
+The results are saved in:
+- bzip2: result-bzip2.txt
+- gzip: result-gzip.txt
+- stockfish: result-stockfish.txt
+- sqlite: result-sqlite.txt
+
+The speedup numbers may vary depending on which
+architecture you are using, and what is the configuration
+of the processor.
+
 
 # Customization: How to use our tool for extended testing?
 
