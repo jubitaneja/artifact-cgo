@@ -41,8 +41,7 @@ $ for i in {1..3}; do time ${CGO_HOME}/scratch/performance/test/gzip/baseline/gz
 
 ## Evaluation: bzip2
 ```
-$ mkdir -p ${CGO_HOME}/scratch/performance/test/bz2/precise
-$ mkdir -p ${CGO_HOME}/scratch/performance/test/bz2/baseline
+$ mkdir -p ${CGO_HOME}/scratch/performance/test/bz2
 $ cd ${CGO_HOME}/scratch/performance/test/bz2
 $ wget https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
 $ tar xvf bzip2-1.0.8.tar.gz
