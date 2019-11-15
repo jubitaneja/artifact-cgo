@@ -234,6 +234,7 @@ $ ./test_precision.sh
 ```
 
 ## Evaluation: Section 4.6
+Follow the instructions [here](https://github.com/jubitaneja/artifact-cgo/tree/master/section-4.6).
 
 ## Evaluation: Section 4.7
 
