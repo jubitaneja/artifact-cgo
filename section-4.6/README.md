@@ -8,7 +8,7 @@ $ ./build_souper_performance.sh
 $ export Z3_PATH=${CGO_HOME}/scratch/performance/souper/third_party/z3-install/bin/z3
 
 $ mkdir -p ${CGO_HOME}/scratch/performance/test
-$ dd if=/dev/urandom bs=1M count=512 of={CGO_HOME}/scratch/performance/test/512mb
+$ dd if=/dev/urandom bs=1M count=512 of=${CGO_HOME}/scratch/performance/test/512mb
 $ wget -O ${CGO_HOME}/scratch/performance/test/db.sq.gz https://github.com/jubitaneja/artifact-cgo/blob/master/section-4.6/db.sq.gz?raw=true
 $ wget -O ${CGO_HOME}/scratch/performance/test/test4.sql https://github.com/jubitaneja/artifact-cgo/blob/master/section-4.6/test4.sql?raw=true
 $ gzip -d -f ${CGO_HOME}/scratch/performance/test/db.sq.gz > ${CGO_HOME}/scratch/performance/test/db.sq
