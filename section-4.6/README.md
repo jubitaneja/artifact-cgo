@@ -99,7 +99,7 @@ $ cd ${CGO_HOME}/scratch/performance/test/sqlite3/precise
 $ time ${CGO_HOME}/scratch/performance/build/bin/clang -lpthread -ldl -O3 -o sqlite3 sqlite3.c shell.c -mllvm -z3-path=${Z3_PATH}
 
 $ cd ${CGO_HOME}/scratch/performance/test/sqlite3/baseline
-$ time ${CGO_HOME}/scratch/performance/baseline/bin/clang -lpthread -ldl -O3 -o sqlite3 sqlite3.c shell.c
+$ time ${CGO_HOME}/scratch/performance/build-baseline/bin/clang -lpthread -ldl -O3 -o sqlite3 sqlite3.c shell.c
 
 $ cat ${CGO_HOME}/scratch/performance/test/test4.sql | time ${CGO_HOME}/scratch/performance/test/sqlite3/precise/sqlite3 ${CGO_HOME}/scratch/performance/test/db.sq > /dev/null
 $ cat ${CGO_HOME}/scratch/performance/test/test4.sql | time ${CGO_HOME}/scratch/performance/test/sqlite3/baseline/sqlite3 ${CGO_HOME}/scratch/performance/test/db.sq > /dev/null
