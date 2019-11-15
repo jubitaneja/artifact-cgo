@@ -28,11 +28,11 @@ $ mv gzip-1.10 precise
 
 $ cd ${CGO_HOME}/scratch/performance/test/gzip/precise
 $ ./configure CC=${CGO_HOME}/scratch/performance/build-baseline/bin/clang
-$ time make -j32 CC=${CGO_HOME}/scratch/performance/build/bin/clang CFLAGS="-O3 -mllvm -z3-path=${Z3_PATH}"
+$ time make CC=${CGO_HOME}/scratch/performance/build/bin/clang CFLAGS="-O3 -mllvm -z3-path=${Z3_PATH}"
 
 $ cd ${CGO_HOME}/scratch/performance/test/gzip/baseline
 $ ./configure CC=/home/liuz/jubi/using-souper-as-lib/build-baseline/bin/clang
-$ time make -j32 CC=${CGO_HOME}/scratch/performance/build-baseline/bin/clang CFLAGS="-O3"
+$ time make CC=${CGO_HOME}/scratch/performance/build-baseline/bin/clang CFLAGS="-O3"
 
 $ for i in {1..3}; do ${CGO_HOME}/scratch/performance/test/gzip/precise/gzip -f -k ${CGO_HOME}/scratch/performance/test/512mb ; done
 $ for i in {1..3}; do ${CGO_HOME}/scratch/performance/test/gzip/baseline/gzip -f -k ${CGO_HOME}/scratch/performance/test/512mb ; done
