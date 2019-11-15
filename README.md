@@ -158,7 +158,7 @@ The script may require you to switch to `sudo`,
 as it installs some packages from `apt-get` package
 manager.
 ```
-$ cd $(pwd)/artifact-cgo
+$ git clone https://github.com/jubitaneja/artifact-cgo.git && cd artifact-cgo
 $ export CGO_HOME=$(pwd)
 $ sudo ./prepare-req.sh
 ```
