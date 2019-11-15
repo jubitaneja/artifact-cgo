@@ -203,8 +203,8 @@ $ cd ${CGO_HOME}/scratch/tools
   $ cmake --version
   cmake version 3.10.2
   ```
-...*Tip:* Make sure to export clang, cmake, redis, re2c binaries path
-...in `PATH` environment variable.
+- *Tip:* Make sure to export clang, cmake, redis, re2c binaries path
+ in `PATH` environment variable.
 
 ## Building Souper
 
