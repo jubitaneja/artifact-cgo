@@ -28,7 +28,7 @@ $ mv gzip-1.10 precise
 
 $ cd ${CGO_HOME}/scratch/performance/test/gzip/precise
 $ ./configure CC=${CGO_HOME}/scratch/performance/build-baseline/bin/clang
-$ time make -j32 CC=${CGO_HOME}/scratch/performance/build/bin/clang CFLAGS="-O3 -z3_path=${Z3_PATH}"
+$ time make -j32 CC=${CGO_HOME}/scratch/performance/build/bin/clang CFLAGS="-O3 -mllvm -z3-path=${Z3_PATH}"
 
 $ cd ${CGO_HOME}/scratch/performance/test/gzip/baseline
 ./configure CC=/home/liuz/jubi/using-souper-as-lib/build-baseline/bin/clang
@@ -50,7 +50,7 @@ $ cp -r bzip2-1.0.8 baseline
 $ mv bzip2-1.0.8 precise
 
 $ cd ${CGO_HOME}/scratch/performance/test/bz2/precise
-$ time make CC=${CGO_HOME}/scratch/performance/build/bin/clang CFLAGS="-Wall -Winline -O3 -g -D_FILE_OFFSET_BITS=64 -z3_path=${Z3_PATH}"
+$ time make CC=${CGO_HOME}/scratch/performance/build/bin/clang CFLAGS="-Wall -Winline -O3 -g -D_FILE_OFFSET_BITS=64 -mllvm -z3-path=${Z3_PATH}"
 
 $ cd ${CGO_HOME}/scratch/performance/test/bz2/baseline
 $ time make CC=${CGO_HOME}/scratch/performance/build-baseline/bin/clang CFLAGS="-Wall -Winline -O3 -g -D_FILE_OFFSET_BITS=64"
@@ -72,7 +72,7 @@ $ cd ${CGO_HOME}/scratch/performance/test/stockfish/precise && unzip stockfish-1
 $ cd ${CGO_HOME}/scratch/performance/test/stockfish/baseline && unzip stockfish-10-src.zip
 
 $ cd ${CGO_HOME}/scratch/performance/test/stockfish/precise
-$ time make build ARCH=x86-64-modern COMPCXX=${CGO_HOME}/scratch/performance/build/bin/clang++ CFLAGS="-z3_path=${Z3_PATH}"
+$ time make build ARCH=x86-64-modern COMPCXX=${CGO_HOME}/scratch/performance/build/bin/clang++ CFLAGS="-mllvm -z3-path=${Z3_PATH}"
 
 $ cd ${CGO_HOME}/scratch/performance/test/stockfish/baseline
 $ time make build ARCH=x86-64-modern COMPCXX=${CGO_HOME}/scratch/performance/build-baseline/bin/clang++
@@ -97,7 +97,7 @@ $ cp -r sqlite-amalgamation-3290000 baseline
 $ mv sqlite-amalgamation-3290000 precise
 
 $ cd ${CGO_HOME}/scratch/performance/test/sqlite3/precise
-$ time ${CGO_HOME}/scratch/performance/build/bin/clang -lpthread -ldl -O3 -o sqlite3 sqlite3.c shell.c -z3_path=${Z3_PATH}
+$ time ${CGO_HOME}/scratch/performance/build/bin/clang -lpthread -ldl -O3 -o sqlite3 sqlite3.c shell.c -mllvm -z3-path=${Z3_PATH}
 
 $ cd ${CGO_HOME}/scratch/performance/test/sqlite3/baseline
 $ time ${CGO_HOME}/scratch/performance/baseline/bin/clang -lpthread -ldl -O3 -o sqlite3 sqlite3.c shell.c
