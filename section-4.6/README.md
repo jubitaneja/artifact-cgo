@@ -1,5 +1,3 @@
-Performance evaluation
-
 ## Preparation
 
 Make sure you have already evaluted the script prepare-req.sh in ${CGO_HOME}.
