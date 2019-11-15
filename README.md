@@ -146,15 +146,15 @@ here.
   has the bottom bit cleared [[Ref:1]](https://reviews.llvm.org/rL252629).
 
 - The LLVM byte-swap intrinsic function was not handled by
-  known bits analysis earlier. It is fixed now [2](https://reviews.llvm.org/D13250).
+  known bits analysis earlier. It is fixed now [[Ref:2]](https://reviews.llvm.org/D13250).
 
-- `0 - x` is always negative [3](https://reviews.llvm.org/D3754).
+- `0 - x` is always negative [[Ref:3]](https://reviews.llvm.org/D3754).
 
 - The result of `@llvm.ctpop` countpop intrinsic had room for improvement
-  [4](https://reviews.llvm.org/D13253).
+  [[Ref:4]](https://reviews.llvm.org/D13253).
 
 - Test for equality can be resolved at compile time sometimes using dataflow
-  analysis [5](https://reviews.llvm.org/D3868).
+  analysis [[Ref:5]](https://reviews.llvm.org/D3868).
 
 
 #### Understanding the results
