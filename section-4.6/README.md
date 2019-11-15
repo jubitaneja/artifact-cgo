@@ -34,8 +34,8 @@ $ cd ${CGO_HOME}/scratch/performance/test/gzip/baseline
 $ ./configure CC=${CGO_HOME}/scratch/performance/build-baseline/bin/clang
 $ time make CC=${CGO_HOME}/scratch/performance/build-baseline/bin/clang CFLAGS="-O3"
 
-$ for i in {1..3}; do ${CGO_HOME}/scratch/performance/test/gzip/precise/gzip -f -k ${CGO_HOME}/scratch/performance/test/512mb ; done
-$ for i in {1..3}; do ${CGO_HOME}/scratch/performance/test/gzip/baseline/gzip -f -k ${CGO_HOME}/scratch/performance/test/512mb ; done
+$ for i in {1..3}; do time ${CGO_HOME}/scratch/performance/test/gzip/precise/gzip -f -k ${CGO_HOME}/scratch/performance/test/512mb ; done
+$ for i in {1..3}; do time ${CGO_HOME}/scratch/performance/test/gzip/baseline/gzip -f -k ${CGO_HOME}/scratch/performance/test/512mb ; done
 
 ```
 
@@ -55,8 +55,8 @@ $ time make CC=${CGO_HOME}/scratch/performance/build/bin/clang CFLAGS="-Wall -Wi
 $ cd ${CGO_HOME}/scratch/performance/test/bz2/baseline
 $ time make CC=${CGO_HOME}/scratch/performance/build-baseline/bin/clang CFLAGS="-Wall -Winline -O3 -g -D_FILE_OFFSET_BITS=64"
 
-$ for i in {1..3}; do ${CGO_HOME}/scratch/performance/test/bz2/precise/bzip2 -f -k ${CGO_HOME}/scratch/performance/test/512mb ; done
-$ for i in {1..3}; do ${CGO_HOME}/scratch/performance/test/bz2/baseline/bzip2 -f -k ${CGO_HOME}/scratch/performance/test/512mb ; done
+$ for i in {1..3}; do time ${CGO_HOME}/scratch/performance/test/bz2/precise/bzip2 -f -k ${CGO_HOME}/scratch/performance/test/512mb ; done
+$ for i in {1..3}; do time ${CGO_HOME}/scratch/performance/test/bz2/baseline/bzip2 -f -k ${CGO_HOME}/scratch/performance/test/512mb ; done
 ```
 
 # Evaluation: stockfish
@@ -78,8 +78,8 @@ $ cd ${CGO_HOME}/scratch/performance/test/stockfish/baseline
 $ time make build ARCH=x86-64-modern COMPCXX=${CGO_HOME}/scratch/performance/build-baseline/bin/clang++
 
 
-$ for i in {1..3}; do ${CGO_HOME}/scratch/performance/test/stockfish/precise/src/stockfish bench 1024 1 26 >/dev/null ; done
-$ for i in {1..3}; do ${CGO_HOME}/scratch/performance/test/stockfish/baseline/src/stockfish bench 1024 1 26 >/dev/null ; done
+$ for i in {1..3}; do time ${CGO_HOME}/scratch/performance/test/stockfish/precise/src/stockfish bench 1024 1 26 >/dev/null ; done
+$ for i in {1..3}; do time ${CGO_HOME}/scratch/performance/test/stockfish/baseline/src/stockfish bench 1024 1 26 >/dev/null ; done
 ```
 
 # Evaluation: sqlite3
