@@ -129,12 +129,33 @@ architecture you are using, and what is the configuration
 of the processor.
 
 ### Evaluation: Section 4.7
-This sections evaluates three soundness bugs
+This section evaluates three soundness bugs
 as discussed in the paper. Run the script:
 ```
 $ cd /usr/src/artifact-cgo/soundness/test
 $ ./sound-test.sh
 ```
+
+### Evaluation: Section 4.8
+This section mentioned that our work contributed
+towards making concrete improvements to LLVM.
+We provide references to each one of those
+here.
+
+- Evaluating `x & (x-1)` results in a value that always
+  has the bottom bit cleared [[Ref:1]](https://reviews.llvm.org/rL252629).
+
+- The LLVM byte-swap intrinsic function was not handled by
+  known bits analysis earlier. It is fixed now [[Ref:2]](https://reviews.llvm.org/D13250).
+
+- `0 - zext(x)` is always negative [[Ref:3]](https://reviews.llvm.org/D3754).
+
+- The result of `@llvm.ctpop` countpop intrinsic had room for improvement
+  [[Ref:4]](https://reviews.llvm.org/D13253).
+
+- Test for equality can be resolved at compile time sometimes using dataflow
+  analysis [[Ref:5]](https://reviews.llvm.org/D3868).
+
 
 #### Understanding the results
 
