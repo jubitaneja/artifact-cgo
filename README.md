@@ -177,7 +177,7 @@ Codename:       bionic
 
 There are certain requirements for different
 tools and compiler. For this, you can either run the
-`prepare-req.sh` script or follow the instructions
+`prepare_req.sh` script or follow the instructions
 for each pre-requisite separately.
 
 ### Approach 1: Use script
@@ -188,7 +188,7 @@ manager.
 ```
 $ git clone https://github.com/jubitaneja/artifact-cgo.git && cd artifact-cgo
 $ export CGO_HOME=$(pwd)
-$ ./prepare-req.sh
+$ ./prepare_req.sh
 ```
 ### Approach 2: Build manually
 

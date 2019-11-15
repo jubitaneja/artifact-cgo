@@ -59,7 +59,7 @@ at [line 191](https://gist.github.com/zhengyangl/9d6c79beded94584f35292ee00c964e
 You can find an installed binary of `redis-server`
 at the path `artifact-cgo/scratch/tools/redis/src`
 You installed redis while running the script
-`prepare-req.sh` in the beginning. Otherwise,
+`prepare_req.sh` in the beginning. Otherwise,
 if you installed it at some other path, you can
 invoke the binary from that path.
 

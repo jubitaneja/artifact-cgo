@@ -1,6 +1,6 @@
 ## Preparation
 
-Make sure you have already evaluted the script prepare-req.sh in ${CGO_HOME}.
+Make sure you have already evaluated the script `prepare_req.sh` in `${CGO_HOME}`.
 
 ```bash
 cd ${CGO_HOME}
