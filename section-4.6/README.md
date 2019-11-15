@@ -1,11 +1,17 @@
 Performance evaluation
 
+## Preparation
+
 ```
 $ cd ${CGO_HOME}
 $ ./build_souper_performance.sh
 $ export Z3_PATH=${CGO_HOME}/scratch/performance/souper/third_party/z3-install/bin/z3
 
-dd if=/dev/urandom bs=1M count=512 of={CGO_HOME}/scratch/performance/test/512mb
+$ dd if=/dev/urandom bs=1M count=512 of={CGO_HOME}/scratch/performance/test/512mb
+$ wget https://github.com/jubitaneja/artifact-cgo/blob/master/section-4.6/db.sq.gz -o {CGO_HOME}/scratch/performance/test/db.sq.gz
+$ wget https://github.com/jubitaneja/artifact-cgo/blob/master/section-4.6/test4.sql -o {CGO_HOME}/scratch/performance/test/test4.sql
+$ gzip -d {CGO_HOME}/scratch/performance/test/db.sq.gz
+
 ```
 
 
