@@ -70,10 +70,10 @@ $ cp stockfish-10-src.zip baseline
 $ cd ${CGO_HOME}/scratch/performance/test/stockfish/precise && unzip stockfish-10-src.zip
 $ cd ${CGO_HOME}/scratch/performance/test/stockfish/baseline && unzip stockfish-10-src.zip
 
-$ cd ${CGO_HOME}/scratch/performance/test/stockfish/precise
-$ time make build ARCH=x86-64-modern COMPCXX=${CGO_HOME}/scratch/performance/build/bin/clang++ CFLAGS="-mllvm -z3-path=${Z3_PATH}"
+$ cd ${CGO_HOME}/scratch/performance/test/stockfish/precises/src
+$ time make build ARCH=x86-64-modern COMPCXX=${CGO_HOME}/scratch/performance/build/bin/clang++ CXXFLAGS="-Wall -Wcast-qual -fno-exceptions -std=c++11  -pedantic -Wextra -Wshadow -m64 -DNDEBUG -O3 -DIS_64BIT -msse -msse3 -mpopcnt -DUSE_POPCNT -flto -mllvm -z3-path=${Z3_PATH}"
 
-$ cd ${CGO_HOME}/scratch/performance/test/stockfish/baseline
+$ cd ${CGO_HOME}/scratch/performance/test/stockfish/baseline/src
 $ time make build ARCH=x86-64-modern COMPCXX=${CGO_HOME}/scratch/performance/build-baseline/bin/clang++
 
 
