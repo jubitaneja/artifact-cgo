@@ -148,7 +148,7 @@ here.
 - The LLVM byte-swap intrinsic function was not handled by
   known bits analysis earlier. It is fixed now [[Ref:2]](https://reviews.llvm.org/D13250).
 
-- `0 - x` is always negative [[Ref:3]](https://reviews.llvm.org/D3754).
+- `0 - zext(x)` is always negative [[Ref:3]](https://reviews.llvm.org/D3754).
 
 - The result of `@llvm.ctpop` countpop intrinsic had room for improvement
   [[Ref:4]](https://reviews.llvm.org/D13253).
