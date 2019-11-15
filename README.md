@@ -154,6 +154,8 @@ tools and compiler. For this, you can either run the
 `prepare-req.sh` script or follow the instructions
 for each pre-requisite separately.
 
+### Approach 1: Use script
+
 The script may require you to switch to `sudo`,
 as it installs some packages from `apt-get` package
 manager.
@@ -162,7 +164,9 @@ $ git clone https://github.com/jubitaneja/artifact-cgo.git && cd artifact-cgo
 $ export CGO_HOME=$(pwd)
 $ sudo ./prepare-req.sh
 ```
-or, follow the initial steps, and start building the tools:
+### Approach 2: Build manually
+
+Follow the initial steps, and start building the tools:
 ```
 $ cd $(pwd)/artifact-cgo
 $ export CGO_HOME=${PWD}
