@@ -87,13 +87,10 @@ $ for i in {1..3}; do time ${CGO_HOME}/scratch/performance/test/stockfish/baseli
 # Evaluation: sqlite3
 ```
 
-$ mkdir -p ${CGO_HOME}/scratch/performance/test/sqlite3/precise
-$ mkdir -p ${CGO_HOME}/scratch/performance/test/sqlite3/baseline
+$ mkdir -p ${CGO_HOME}/scratch/performance/test/sqlite3
 
 $ cd ${CGO_HOME}/scratch/performance/test/sqlite3
 $ wget https://www.sqlite.org/2019/sqlite-amalgamation-3290000.zip
-$ cp sqlite-amalgamation-3290000.zip precise
-$ cp sqlite-amalgamation-3290000.zip baseline
 $ unzip sqlite-amalgamation-3290000.zip
 $ cp -r sqlite-amalgamation-3290000 baseline
 $ mv sqlite-amalgamation-3290000 precise
