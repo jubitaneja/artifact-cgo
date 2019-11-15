@@ -8,6 +8,7 @@ Make sure you have already evaluted the script prepare-req.sh in ${CGO_HOME}.
 $ cd ${CGO_HOME}
 $ ./build_souper_performance.sh
 $ export Z3_PATH=${CGO_HOME}/scratch/performance/souper/third_party/z3-install/bin/z3
+$ redis-cli flushdb
 
 $ mkdir -p ${CGO_HOME}/scratch/performance/test
 $ dd if=/dev/urandom bs=1M count=512 of=${CGO_HOME}/scratch/performance/test/512mb
