@@ -77,7 +77,7 @@ $ cd ${CGO_HOME}/scratch/performance/test/stockfish/precise/src
 $ time make build ARCH=x86-64-modern COMPCXX=${CGO_HOME}/scratch/performance/build/bin/clang++ CXXFLAGS="-Wall -Wcast-qual -fno-exceptions -std=c++11  -pedantic -Wextra -Wshadow -m64 -DNDEBUG -O3 -DIS_64BIT -msse -msse3 -mpopcnt -DUSE_POPCNT -flto -mllvm -z3-path=${Z3_PATH}"
 
 $ cd ${CGO_HOME}/scratch/performance/test/stockfish/baseline/src
-$ time make build ARCH=x86-64-modern COMPCXX=${CGO_HOME}/scratch/performance/build-baseline/bin/clang++
+$ time make build ARCH=x86-64-modern COMPCXX=${CGO_HOME}/scratch/performance/build-baseline/bin/clang++ CXXFLAGS="-Wall -Wcast-qual -fno-exceptions -std=c++11  -pedantic -Wextra -Wshadow -m64 -DNDEBUG -O3 -DIS_64BIT -msse -msse3 -mpopcnt -DUSE_POPCNT"
 
 
 $ for i in {1..3}; do time ${CGO_HOME}/scratch/performance/test/stockfish/precise/src/stockfish bench 1024 1 26 >/dev/null ; done
