@@ -60,8 +60,8 @@ $ cd {CGO_HOME}/scratch/performance/test/stockfish/baseline
 $ time make build ARCH=x86-64-modern COMPCXX=${CGO_HOME}/scratch/performance/baseline/bin/clang++
 
 
-for i in {1..3}; do {CGO_HOME}/scratch/performance/test/stockfish/precise/src/stockfish bench 1024 1 26 >/dev/null ; done
-for i in {1..3}; do {CGO_HOME}/scratch/performance/test/stockfish/baseline/src/stockfish bench 1024 1 26 >/dev/null ; done
+$ for i in {1..3}; do {CGO_HOME}/scratch/performance/test/stockfish/precise/src/stockfish bench 1024 1 26 >/dev/null ; done
+$ for i in {1..3}; do {CGO_HOME}/scratch/performance/test/stockfish/baseline/src/stockfish bench 1024 1 26 >/dev/null ; done
 ```
 
 # Evaluation: sqlite3
@@ -86,6 +86,6 @@ $ time ${CGO_HOME}/scratch/performance/baseline/bin/clang -lpthread -ldl -O3 -o 
 
 $ cd {CGO_HOME}/scratch/performance/test/sqlite3
 
-cat ./test4.sql | time precise/sqlite3 db.sq > /dev/null
-cat ./test4.sql | time baseline/sqlite3 db.sq > /dev/null
+$ cat ./test4.sql | time precise/sqlite3 db.sq > /dev/null
+$ cat ./test4.sql | time baseline/sqlite3 db.sq > /dev/null
 ```
