@@ -258,6 +258,7 @@ $ ./test_sound.sh
 ```
 
 # Understanding the results
+
 The results are saved in:
 - bzip2: result-bzip2.txt
 - gzip: result-gzip.txt
