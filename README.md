@@ -91,7 +91,7 @@ dataflow analyses as shown in examples in the paper.
 Runt the script to reproduce the results.
 ```
 $ cd /usr/src/artifact-cgo/precision/test
-$ ./run.sh
+$ ./test_precision.sh
 ```
 
 #### Understanding the results
@@ -114,7 +114,7 @@ this experiment setting by generating a random
 Run the script to reproduce the results for all applications.
 ```
 $ cd /usr/src/artifact-cgo/performance/test
-$ ./main.sh
+$ ./test_performance.sh
 ```
 
 #### Understanding the results
@@ -133,7 +133,7 @@ This section evaluates three soundness bugs
 as discussed in the paper. Run the script:
 ```
 $ cd /usr/src/artifact-cgo/soundness/test
-$ ./sound-test.sh
+$ ./test_sound.sh
 ```
 
 ### Evaluation: Section 4.8
