@@ -258,7 +258,110 @@ $ ./build_souper_sound.sh
 $ ./test_sound.sh
 ```
 
-# Understanding the results
+# Analyzing the results
+
+## Section 4.1
+
+The precision testing results are saved in individual
+files for each analysis. For instance,
+
+- Known bits analysis results in files:`knownbits_*`
+- Negative analysis results in files: `neg_*`
+- Non-negative analysis results in files: `nonneg_*`
+- Non-zero analysis results in files: `nonzero_*`
+- Power of two analysis results in files: `power_*`
+- Number of sign bits analysis results in files: `signbits_*`
+- Range analysis results in files: `range_*`
+- Demanded bits results in files: `demandedbits_*`
+
+Each individual file corresponds to a Souper
+expression for which we computed dataflow facts
+from our tool, Souper and LLVM compiler. So, you
+will find a very large number of files generated
+as a result.
+
+Now, to reproduce the numbers as shown in Table 1
+in the paper, run the script. This script will
+give you the count of parameters like,
+`Souper is more precise`, `LLVM is more precise`,
+`Same precision`, `Resource exhaustion`, 
+`Average time per expression`.
+
+You may find non-zero number of `llvm is stronger`
+cases for some analyses. These should be manually
+tested and analyzed further by increasing the
+solver timeout value, increasing the maximum
+tries for constant synthesis, not limiting
+the execution time on Z3 and souper-check processes
+through crontab, etc.
+
+## Section 4.2 to 4.5
+
+```
+===========================================
+ Evaluation: (Known bits) Section 4.2
+===========================================
+-------------------------------
+ Test: /usr/src/artifact-cgo/precision/test/section-4.2/known1.opt
+-------------------------------
+%x:i8 = var
+%0:i8 = shl 32:i8, %x
+infer %0
+knownBits from souper: xxx00000
+knownBits from compiler: xxxxxxxx
+; Listing valid replacements.
+; Using solver: Z3 + internal cache
+```
+
+```
+===========================================
+ Evaluation: (Power of two) Section 4.3
+===========================================
+-------------------------------
+ Test: /usr/src/artifact-cgo/precision/test/section-4.3/power1.opt
+-------------------------------
+%x:i64 = var (range=[1,3))
+infer %x
+known powerOfTwo from souper: true
+known powerOfTwo from compiler: false
+; Listing valid replacements.
+; Using solver: Z3 + internal cache
+```
+
+```
+===========================================
+ Evaluation: (Demanded bits) Section 4.4
+===========================================
+-------------------------------
+ Test: /usr/src/artifact-cgo/precision/test/section-4.4/demanded1.opt
+-------------------------------
+%x:i8 = var
+%0:i1 = slt %x, 0:i8
+infer %0
+demanded-bits from souper for %x : 10000000
+demanded-bits from compiler for var_x : 11111111
+; Listing valid replacements.
+; Using solver: Z3 + internal cache
+```
+
+```
+===========================================
+ Evaluation: (Range) Section 4.5
+===========================================
+-------------------------------
+ Test: /usr/src/artifact-cgo/precision/test/section-4.5/range1.opt
+-------------------------------
+%x:i8 = var
+%0:i1 = eq 0:i8, %x
+%1:i8 = select %0, 1:i8, %x
+infer %1
+known range from souper: [1,0)
+known at return: [-1,-1)
+; Listing valid replacements.
+; Using solver: Z3 + internal cache
+```
+
+## Section 4.6
 
 The results are saved in:
 - bzip2: result-bzip2.txt
@@ -270,6 +373,32 @@ The speedup numbers may vary depending on which
 architecture you are using, and what is the configuration
 of the processor.
 
+## Section 4.7
+
+```
+===========================================
+ Evaluation: (Soundness bugs) Section 4.7
+===========================================
+
+
+----------------------------------------------------------
+Testing Soundness Bug #1 in non-zero dataflow analysis
+----------------------------------------------------------
+
+%0:i32 = add 0:i32, 0:i32
+infer %0
+
+known nonZero from souper: false
+
+known nonZero from compiler: true
+; Listing valid replacements.
+; Using solver: Z3 + internal cache
+
+; Static profile 1
+; Function: foo
+%0:i32 = add 0:i32, 0:i32
+cand %0 0:i32
+```
 
 # Customization: How to use our tool for extended testing?
 
