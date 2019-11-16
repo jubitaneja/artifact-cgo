@@ -295,8 +295,9 @@ tries for constant synthesis, not limiting
 the execution time on Z3 and souper-check processes
 through crontab, etc.
 
-## Section 4.2 to 4.5
+## Section 4.2
 
+### Sample output
 ```
 ===========================================
  Evaluation: (Known bits) Section 4.2
@@ -313,6 +314,51 @@ knownBits from compiler: xxxxxxxx
 ; Using solver: Z3 + internal cache
 ```
 
+### Details
+
+The results should look like this. You are analyzing
+known bits computed by Souper and LLVM compiler.
+
+#### Input
+
+The first part is the input test written in
+Souper IR.
+```
+%x:i8 = var
+%0:i8 = shl 32:i8, %x
+infer %0
+```
+#### Workflow
+
+- When computing facts by Souper - How it works?
+
+Input (Souper IR) -> souper-check -infer-known-bits -> known bits from Souper
+
+- When computing facts by LLVM compiler - how it works?
+
+Input (Souper IR) -> souper2llvm -> LLVM IR (.ll file) -> llvm-as -> LLVM IR (.bc file) -> souper
+-print-known-bits-at-return -> known bits from compiler
+
+In the second pipeline, `souper` makes calls to LLVM's
+dataflow functions to compute results from compiler.
+
+#### Dataflow information
+The result is a 8-bit known bits information for shift-left
+operation `(32 << x)`. The `x` in the result indicates that
+a bit is unknown, `0` means that a bit is known zero, `1`
+means that a bit is known one.
+
+Clearly, compiler computes `xxxxxxxx` which means all bits
+are unknown. However, Souper computes `xxx00000` which means
+our algorithm can prove 5-low bits as zero and is thus, more
+precise than LLVM compiler.
+
+Likewise, you can now analyze other examples included in the result.
+
+## Section 4.3
+
+### Sample output
+
 ```
 ===========================================
  Evaluation: (Power of two) Section 4.3
@@ -327,6 +373,8 @@ known powerOfTwo from compiler: false
 ; Listing valid replacements.
 ; Using solver: Z3 + internal cache
 ```
+
+## Section 4.4
 
 ```
 ===========================================
@@ -343,6 +391,9 @@ demanded-bits from compiler for var_x : 11111111
 ; Listing valid replacements.
 ; Using solver: Z3 + internal cache
 ```
+
+
+## Section 4.5
 
 ```
 ===========================================
