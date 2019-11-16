@@ -224,7 +224,7 @@ $ cd ${CGO_HOME}/scratch/tools
 
 ## Building Souper
 
-After all pre-requisties have been installed,
+After all pre-requisites have been installed,
 follow the steps to build Souper for precision testing
 experiment.
 
@@ -343,7 +343,7 @@ infer %0
 
 This specifies a shift left operation of a 8-bit
 constant value `32` by an unknown shift
-amount labelled by `%x`. The question is to
+amount labeled by `%x`. The question is to
 compute known bits information for `%0` i.e.
 `32 << %x` from both compiler and our tool - Souper.
 
@@ -405,7 +405,7 @@ What does it mean? This is an input variable
 of 64-bits with a given range [1,3) in which
 lower bound `1` is included, but upper bound
 `3` is excluded. In short, the input variable
-labelled `%x` in above Souper IR is a number in
+labeled `%x` in above Souper IR is a number in
 the set `{1, 2}`.
 
 Now, we question if this is a power of two or not
@@ -481,7 +481,7 @@ Likewise, you can now verify other examples in this section.
 ## Section 4.5
 
 You are analyzing integer range analysis results in
-this section. The outout should look like this.
+this section. The output should look like this.
 
 ### Sample Output
 ```
@@ -752,6 +752,13 @@ of the machine or because of several other factors.
 
 ## Section 4.7
 
+You are analyzing the soundness bugs in this section.
+We reproduced these soundness bugs by forward porting
+the bugs that were reported in old version of LLVM's
+dataflow analyses to LLVM-8.0. The output should look like this.
+
+### Sample output
+
 ```
 ===========================================
  Evaluation: (Soundness bugs) Section 4.7
@@ -777,5 +784,21 @@ known nonZero from compiler: true
 cand %0 0:i32
 ```
 
+### Input
+In this test case, we are asking LLVM compiler and Souper
+to tell us if `0+0` is non-zero?
+Again, this is not from current version of LLVM, but
+from an older version but we forward ported the bug
+from older version to LLVM-8.0.
+
+### Dataflow information
+In this case,compiler tells us the result is `true`,
+which means LLVM says that `0+0` is non-zero.
+Souper, instead, gives the result `false`. Thus,
+more precise result from LLVM compiler indicated
+a soundness bug in LLVM because `0+0` is always zero.
+This was fixed later on.
+
 # Customization: How to use our tool for extended testing?
+
 
