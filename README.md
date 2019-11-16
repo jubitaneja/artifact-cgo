@@ -635,6 +635,8 @@ If you want to check individual result of
 each iteration, you can check the file:
 `result-bzip.txt` in Docker at path:
 `/usr/src/artifact-cgo/performance/test/`
+
+##### Sample Output
 ```
 ===================================
 Final result of bzip2
@@ -668,6 +670,8 @@ If you want to check individual result of
 each iteration, you can check the file:
 `result-gzip.txt` in Docker at path:
 `/usr/src/artifact-cgo/performance/test/`
+
+##### Sample Output
 ```
 ===================================
 Final result of gzip
@@ -704,6 +708,7 @@ each iteration, you can check the file:
 `result-sqlite.txt` in Docker at path:
 `/usr/src/artifact-cgo/performance/test/`
 
+##### Sample Output
 ```
 ===================================
 Final result of SQLite
@@ -730,6 +735,7 @@ each iteration, you can check the file:
 `result-stockfish.txt` in Docker at path:
 `/usr/src/artifact-cgo/performance/test/`
 
+##### Sample Output
 ```
 ===================================
 Final result of Stockfish
