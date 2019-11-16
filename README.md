@@ -430,15 +430,48 @@ demanded-bits from compiler for var_x : 11111111
 ```
 
 ### Input
+
 The input in this case is:
 ```
-%x:i64 = var (range=[1,3))
-infer %x
+%x:i8 = var
+%0:i1 = slt %x, 0:i8
+infer %0
 ```
 
+This specifies a signed less than (slt) operation to
+check if 8-bit (i8) input variable `%x` is signed
+less than `0`. The question is to compute demanded bits
+for variable `%x` from both Souper and LLVM.
+
+### Dataflow information
+The representation of bits is same as known bits,
+where `x` means unknown bit, `0` means a bit is not
+demanded, and `1` means that a bit is demanded.
+
+A bit is not demanded means the value of it won't
+affect the result in any way, and the more we know
+about such bits, the better it is to perform optimizations.
+You can check details of this analysis in the paper.
+
+Now, coming back to this example. LLVM computes
+the result ``11111111` which means LLVM says that all
+bits are demanded.
+However, Souper using our SMT solver-based algorithms
+computes the result `10000000` which means that
+our algorithms can prove that only most significant
+bit (MSB) is demanded, and all other bits in the result are
+not demanded. This is because signed less than operation
+with constant zero only cares about the MSB.
+Hence, Souper computes precise fact than LLVM.
+
+Likewise, you can now verify other examples in this section.
 
 ## Section 4.5
 
+You are analyzing integer range analysis results in
+this section. The outout should look like this.
+
+### Sample Output
 ```
 ===========================================
  Evaluation: (Range) Section 4.5
@@ -458,7 +491,7 @@ known at return: [-1,-1)
 
 ## Section 4.6
 
-### Sample output
+### Sample output Log on the console
 ```
 ============================
    Performance Evaluation
@@ -516,6 +549,18 @@ Iteration #1: Precise SQLite run
 
 
 Iteration #2: Baseline SQLite run
+```
+
+```
+***************************
+Testing #4: stockfish
+***************************
+
+Iteration #1: Baseline stockfish run
+Stockfish 10 64 POPCNT by T. Romstad, M. Costalba, J. Kiiski, G. Linscott
+info depth 1 seldepth 1 multipv 1 score cp 116 nodes 20 nps 10000 tbhits 0 time 2 pv e2e4
+info depth 2 seldepth 2 multipv 1 score cp 112 nodes 54 nps 27000 tbhits 0 time 2 pv e2e4 b7b6
+
 ```
 
 The results are saved in:
