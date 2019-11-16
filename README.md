@@ -338,12 +338,11 @@ compute known bits information for `%0` i.e.
 
 - When computing facts by Souper - How it works?
 
-Input (Souper IR) -> **`souper-check`** -infer-known-bits -> known bits from Souper
+Input (Souper IR) -> **`souper-check`** -> known bits from Souper
 
 - When computing facts by LLVM compiler - how it works?
 
-Input (Souper IR) -> **`souper2llvm`** -> LLVM IR (.ll file) -> **`llvm-as`** -> LLVM IR (.bc file) -> **`souper`**
--print-known-bits-at-return -> known bits from compiler
+Input (Souper IR) -> **`souper2llvm`** -> LLVM IR (.ll file) -> **`llvm-as`** -> LLVM IR (.bc file) -> **`souper`** -> known bits from compiler
 
 In the second pipeline, `souper` makes calls to LLVM's
 dataflow functions to compute results from compiler.
@@ -489,6 +488,40 @@ known at return: [-1,-1)
 ; Using solver: Z3 + internal cache
 ```
 
+### Input
+
+```
+%x:i8 = var
+%0:i1 = eq 0:i8, %x
+%1:i8 = select %0, 1:i8, %x
+infer %1
+```
+
+The select instruction is LLVM’s ternary
+conditional expression, analogous to the `?:`
+construct in C and C++. The expression below
+returns one if %x is zero, and returns %x otherwise.
+
+The goal is to compute the range for 8-bit
+result (`%1`) computed by select operation.
+
+### Dataflow information
+
+LLVM cannot compute any precise result in this
+case, and returns the default full-set represented
+by `[-1, -1]` which means the range of numbers starting
+at `-1` as lower bound, wrapping around and stopping
+at upper bound `-1`.
+
+However, Souper computes the result `[1, 0]` which
+means it is a set of all numbers starting at `1`,
+wrapping around but excluding `0`. Thus, Souper
+can precisely compute the range and tell us that
+the result will not be zero, but any other number.
+
+Likewise, you can now analyze other examples in this
+section.
+
 ## Section 4.6
 
 ### Sample output Log on the console
@@ -562,6 +595,85 @@ info depth 1 seldepth 1 multipv 1 score cp 116 nodes 20 nps 10000 tbhits 0 time 
 info depth 2 seldepth 2 multipv 1 score cp 112 nodes 54 nps 27000 tbhits 0 time 2 pv e2e4 b7b6
 
 ```
+### Final ouput on console
+```
+===================================
+Final result of bzip2
+===================================
+
+
+Avg Baseline Compression time = 297.173333333 sec
+
+Avg Precise Compression time = 298.463333333 sec
+
+
+
+Speedup in compression time = -0.434090093324%
+------------------------------------------------
+
+
+Avg Baseline Decompression time = 130.29 sec
+
+Avg Precise Decompression time = 133.043333333 sec
+
+
+
+Speedup in decompression time = -2.11323457927%
+------------------------------------------------
+
+
+===================================
+Final result of gzip
+===================================
+
+
+Avg Baseline Compression time = 58.3 sec
+
+Avg Precise Compression time = 58.7266666667 sec
+
+
+
+Speedup in compression time = -0.731846769583%
+------------------------------------------------
+Avg Baseline Decompression time = 10.3366666667 sec
+
+Avg Precise Decompression time = 10.44 sec
+
+
+
+Speedup in decompression time = -0.99967752338%
+------------------------------------------------
+
+
+===================================
+Final result of SQLite
+===================================
+
+
+Avg Baseline SQLite = 81.3666666667 sec
+
+Avg Precise SQLite = 79.16 sec
+
+
+
+Speedup in SQLite = 2.71200327735%
+------------------------------------------------
+
+
+===================================
+Final result of Stockfish
+===================================
+
+Avg total time for Baseline Stockfish = 272.391666667 sec
+
+Avg total time for Precise Stockfish = 269.726sec
+
+
+
+Speedup in SQLite = 0.978615351669%
+------------------------------------------------
+```
+
 
 The results are saved in:
 - bzip2: result-bzip2.txt
