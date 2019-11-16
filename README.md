@@ -807,7 +807,7 @@ a soundness bug in LLVM because `0+0` is always zero.
 This was fixed later on.
 
 The rest of the output starting with `;` are comments
-and `Function: foo` is a candiate harvested by Souper.
+and `Function: foo` is a candidate harvested by Souper.
 This is not giving us any relevant information, so
 you can ignore these parts.
 
@@ -819,7 +819,7 @@ precise dataflow facts using our tool.
 
 ### Test Inputs
 If you are interested in taking a look at more test
-inputs, you can refer to the Souper testsuite to find
+inputs, you can refer to the Souper test suite to find
 files with name `*known*.opt`, `power*.opt`, `sign*.opt`,
 `range*.opt`, `demanded*.opt` [here](https://github.com/google/souper/tree/master/test/Tool).
 
@@ -836,7 +836,7 @@ and from LLVM compiler are as shown in the Table below.
 | Non-negative                 |                                                     -infer-non-neg |             -print-nonneg-at-return |
 | Non-zero                     |                                                    -infer-non-zero |           -print-non-zero-at-return |
 | Power of two                 |                                                   -infer-power-two |          -print-power-two-at-return |
-| Integer Range                | -infer-range -souper-range-maz-precise -souper-range-max-tries=300 |              -print-range-at-return |
+| Integer Range                | -infer-range -souper-range-max-precise -souper-range-max-tries=300 |              -print-range-at-return |
 | Demanded bits                |                                               -infer-demanded-bits | -print-demanded-bits-from-harvester |
 
 
@@ -859,4 +859,41 @@ and from LLVM compiler are as shown in the Table below.
   precision setup in Docker at `/usr/src/artifact-cgo/precision/souper-build/`,
   and from manual building setup at `$CGO_HOME/scratch/precision/souper/build`.
 
+  Also, in Docker `-z3-path=/path/to/z3` is already exported as an environment
+  variable. You can directly use `$SOUPER_SOLVER` in command line.
+  For manual building setup, please refer to this script:
+  [test_precision.sh](https://github.com/jubitaneja/artifact-cgo/blob/master/test_precision.sh)
+  and look for `SOUPER_SOLVER`.
+
+- To compute dataflow facts from LLVM compiler,
+  you should first write a test input in Souper IR, and then
+  run it with `souper` with specific argument from the Table shown above.
+
+  Input (Souper IR) -> **`souper2llvm-precision-test`** -> LLVM IR (.ll file) -> **`llvm-as`** -> LLVM bitcode (.bc
+  file) -> **`souper`** -> Dataflow result from compiler
+
+  **Sample command line**
+
+  ```
+  souper2llvm-precision-test inputFile.opt | llvm-as | souper -print-known-at-return
+  ```
+
+  In the above command, path to **`souper2llvm-precision-test`** and **`souper`**
+  utility is from precision setup in Docker
+  at `/usr/src/artifact-cgo/precision/souper-build/`,
+  and from manual building setup at `$CGO_HOME/scratch/precision/souper/build`.
+  **`llvm-as`** in Docker is
+  at `/usr/src/artifact-cgo/precision/souper/third_party/llvm/Release/bin`, and
+  in manual setup at
+  `$CGO_HOME/scratch/precision/souper/third_party/llvm/Release/bin`
+
+
+  For demanded bits computation only from LLVM compiler, use `souper2llvm-db`
+  to translate a given Souper IR to LLVM IR.
+
+### More experiments
+
+  You can follow instructions
+  of [Section 4.6](https://github.com/jubitaneja/artifact-cgo/tree/master/section-4.6)
+  to evaluate the performance of any other benchmarks as well.
 
