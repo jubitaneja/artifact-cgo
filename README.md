@@ -64,7 +64,7 @@ benchmark. We cannot provide a copy of this benchmark as restricted
 by the SPEC License Agreement. For details, check
 [this](https://www.spec.org/cpu2017/docs/licenses.html).
 
-For Table 1 in paper, we assume you have SPEC ISO image, version 1.0.1.
+For Table 1 in paper, we assume you have a SPEC ISO image, version 1.0.1.
 
 ### Steps to follow
 1. Fetch the docker image from docker hub.
