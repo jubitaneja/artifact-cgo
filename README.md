@@ -281,7 +281,11 @@ will find a very large number of files generated
 as a result.
 
 Now, to reproduce the numbers as shown in Table 1
-in the paper, run the script. This script will
+in the paper, you just have to run this 
+[script]()
+
+
+This script will
 give you the count of parameters like,
 `Souper is more precise`, `LLVM is more precise`,
 `Same precision`, `Resource exhaustion`, 

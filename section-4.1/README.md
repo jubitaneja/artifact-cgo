@@ -134,52 +134,57 @@ computed by Souper and LLVM. So, for clean usage and
 understanding later on, create separate directories and run
 scripts in that so that you can always have separate results.
 
+Make sure you set and move to the path:
+```
+$ export CGO_HOME=$(pwd)/artifact-cgo
+$ cd $CGO_HOME
+```
 - For known bits dataflow fact:
 ```
-$ mkdir known && cd known
+$ mkdir $CGO_HOME/known && cd $CGO_HOME/known
 $ $souper_prec/souper/build/cache_dfa --knownbits
 ```
 You will see filenames starting with `knownbits_*`
 
 - For negative dataflow fact:
 ```
-$ mkdir neg && cd neg
+$ mkdir $CGO_HOME/neg && cd $CGO_HOME/neg
 $ $souper_prec/souper/build/cache_dfa --neg
 ```
 
 - For non-negative dataflow fact:
 ```
-$ mkdir non-neg && cd non-neg
+$ mkdir $CGO_HOME/non-neg && cd $CGO_HOME/non-neg
 $ $souper_prec/souper/build/cache_dfa --nonneg
 ```
 
 - For non-zero dataflow fact:
 ```
-$ mkdir non-zero && cd non-zero
+$ mkdir $CGO_HOME/non-zero && cd $CGO_HOME/non-zero
 $ $souper_prec/souper/build/cache_dfa --nonzero
 ```
 
 - For power of two dataflow fact:
 ```
-$ mkdir power && cd power
+$ mkdir $CGO_HOME/power && cd $CGO_HOME/power
 $ $souper_prec/souper/build/cache_dfa --power
 ```
 
 - For number of sign bits dataflow fact:
 ```
-$ mkdir signbits && cd signbits
+$ mkdir $CGO_HOME/signbits && cd $CGO_HOME/signbits
 $ $souper_prec/souper/build/cache_dfa --signBits
 ```
 
 - For range dataflow fact:
 ```
-$ mkdir range && cd range
+$ mkdir $CGO_HOME/range && cd $CGO_HOME/range
 $ $souper_prec/souper/build/cache_range
 ```
 
 - For demanded bits dataflow fact:
 ```
-$ mkdir db && cd db
+$ mkdir $CGO_HOME/db && cd $CGO_HOME/db
 $ $souper_prec/souper/build/cache_demandedbits
 ```
 
