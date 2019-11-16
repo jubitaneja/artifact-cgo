@@ -817,11 +817,13 @@ You can easily customize test inputs written in Souper IR,
 and try different dataflow facts options to compute the
 precise dataflow facts using our tool.
 
+### Test Inputs
 If you are interested in taking a look at more test
 inputs, you can refer to the Souper testsuite to find
 files with name `*known*.opt`, `power*.opt`, `sign*.opt`,
 `range*.opt`, `demanded*.opt` [here](https://github.com/google/souper/tree/master/test/Tool).
 
+### Different Options
 The list of options that you can use to compute precise
 dataflow facts using our SMT solver-based algorithms,
 and from LLVM compiler are as shown in the Table below.
@@ -837,5 +839,24 @@ and from LLVM compiler are as shown in the Table below.
 | Integer Range                | -infer-range -souper-range-maz-precise -souper-range-max-tries=300 |              -print-range-at-return |
 | Demanded bits                |                                               -infer-demanded-bits | -print-demanded-bits-from-harvester |
 
+
+### Workflow
+
+- To compute maximally precise dataflow facts using our algorithms,
+  you should first write a test input in Souper IR, and then
+  run it with `souper-check` with specific argument along with
+  Z3 solver path specified.
+
+  Input (Souper IR) -> **`souper-check`** -> Dataflow result
+
+  **Sample command line**
+
+  ```
+  souper-check -infer-known-bits -z3-path=/path/to/z3 inputFile.opt
+  ```
+
+  In the above command, path to **`souper-check`** utility is from
+  precision setup in Docker at `/usr/src/artifact-cgo/precision/souper-build/`,
+  and from manual building setup at `$CGO_HOME/scratch/precision/souper/build`.
 
 
