@@ -146,53 +146,58 @@ $ mkdir $CGO_HOME/known && cd $CGO_HOME/known
 $ $souper_prec/souper/build/cache_dfa --knownbits
 ```
 You will see filenames starting with `knownbits_*`
+This may take upto 22 hours to finish on a machine
+with 16-cores.
 
 - For negative dataflow fact:
 ```
 $ mkdir $CGO_HOME/neg && cd $CGO_HOME/neg
 $ $souper_prec/souper/build/cache_dfa --neg
 ```
+Estimated time: 5 hours
 
 - For non-negative dataflow fact:
 ```
 $ mkdir $CGO_HOME/non-neg && cd $CGO_HOME/non-neg
 $ $souper_prec/souper/build/cache_dfa --nonneg
 ```
+Estimated time: 9 hours
 
 - For non-zero dataflow fact:
 ```
 $ mkdir $CGO_HOME/non-zero && cd $CGO_HOME/non-zero
 $ $souper_prec/souper/build/cache_dfa --nonzero
 ```
+Estimated time: 18 hours
 
 - For power of two dataflow fact:
 ```
 $ mkdir $CGO_HOME/power && cd $CGO_HOME/power
 $ $souper_prec/souper/build/cache_dfa --power
 ```
+Estimated time: 5 hours
 
 - For number of sign bits dataflow fact:
 ```
 $ mkdir $CGO_HOME/signbits && cd $CGO_HOME/signbits
 $ $souper_prec/souper/build/cache_dfa --signBits
 ```
+Estimated time: 21 hours
 
 - For range dataflow fact:
 ```
 $ mkdir $CGO_HOME/range && cd $CGO_HOME/range
 $ $souper_prec/souper/build/cache_range
 ```
+Estimated time: 25 hours
 
 - For demanded bits dataflow fact:
 ```
 $ mkdir $CGO_HOME/db && cd $CGO_HOME/db
 $ $souper_prec/souper/build/cache_demandedbits
 ```
+Estimated time: 25 hours
 
-### Understanding the results
-
-You can now count the number of `llvm is stronger`,
-`souper is stronger`, `timeout` cases for each dataflow
-fact.
-
+To understand the results, you can check
+[this](https://github.com/jubitaneja/artifact-cgo#section-41).
 
