@@ -805,6 +805,11 @@ more precise result from LLVM compiler indicated
 a soundness bug in LLVM because `0+0` is always zero.
 This was fixed later on.
 
+The rest of the output starting with `;` are comments
+and `Function: foo` is a candiate harvested by Souper.
+This is not giving us any relevant information, so
+you can ignore these parts.
+
 # Customization: How to use our tool for extended testing?
 
 
