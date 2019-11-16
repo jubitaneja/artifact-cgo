@@ -13,7 +13,7 @@ in Table 1 and 2 (in paper) are time consuming.
 
 **Estimated Time**
 
-To give you an idea on evaluation time, for testing SPEC
+To give you an idea on evaluation time to test SPEC
 CPU 2017 benchmark for precision testing experiment, it
 takes a minimum of ~8 hours to a maximum of ~40 hours
 for one dataflow fact, on a machine with two 28-core Xeon processors.
@@ -33,7 +33,7 @@ you to pull the docker image especially for performance
 evaluation experiment which takes the longest in manual
 setup.**
 
-The analysis of results is discussed
+The analysis of results are discussed
 [here](https://github.com/jubitaneja/artifact-cgo#analyzing-the-results).
 We also provide guidelines for
 customizing
@@ -258,7 +258,7 @@ Follow the instructions
 
 ## Evaluation: Section 4.2 to Section 4.5
 
-Run the script `test_precision.sh`
+Run the script [test_precision.sh](https://github.com/jubitaneja/artifact-cgo/blob/master/test_precision.sh)
 ```
 $ cd ${CGO_HOME}
 $ ./test_precision.sh
@@ -270,7 +270,8 @@ Follow the instructions [here](https://github.com/jubitaneja/artifact-cgo/tree/m
 ## Evaluation: Section 4.7
 
 Build souper to reproduce soundness bugs, and then
-run the `test_sound.sh` script to test bugs.
+run the [test_sound.sh](https://github.com/jubitaneja/artifact-cgo/blob/master/test_sound.sh)
+script to test bugs.
 ```
 $ cd ${CGO_HOME}
 $ ./build_souper_sound.sh
