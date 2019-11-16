@@ -297,6 +297,10 @@ through crontab, etc.
 
 ## Section 4.2
 
+You are analyzing known bits computed by
+our tool, Souper and LLVM compiler.
+The results should look like this. 
+
 ### Sample output
 ```
 ===========================================
@@ -314,12 +318,7 @@ knownBits from compiler: xxxxxxxx
 ; Using solver: Z3 + internal cache
 ```
 
-### Details
-
-The results should look like this. You are analyzing
-known bits computed by Souper and LLVM compiler.
-
-#### Input
+### Input
 
 The first part is the input test written in
 Souper IR.
@@ -328,21 +327,21 @@ Souper IR.
 %0:i8 = shl 32:i8, %x
 infer %0
 ```
-#### Workflow
+### Workflow
 
 - When computing facts by Souper - How it works?
 
-Input (Souper IR) -> souper-check -infer-known-bits -> known bits from Souper
+Input (Souper IR) -> **`souper-check`** -infer-known-bits -> known bits from Souper
 
 - When computing facts by LLVM compiler - how it works?
 
-Input (Souper IR) -> souper2llvm -> LLVM IR (.ll file) -> llvm-as -> LLVM IR (.bc file) -> souper
+Input (Souper IR) -> **`souper2llvm`** -> LLVM IR (.ll file) -> **`llvm-as`** -> LLVM IR (.bc file) -> **`souper`**
 -print-known-bits-at-return -> known bits from compiler
 
 In the second pipeline, `souper` makes calls to LLVM's
 dataflow functions to compute results from compiler.
 
-#### Dataflow information
+### Dataflow information
 The result is a 8-bit known bits information for shift-left
 operation `(32 << x)`. The `x` in the result indicates that
 a bit is unknown, `0` means that a bit is known zero, `1`
