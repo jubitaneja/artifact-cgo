@@ -298,7 +298,7 @@ through crontab, etc.
 ## Section 4.2
 
 You are analyzing known bits computed by
-our tool, Souper and LLVM compiler.
+our tool - Souper, and LLVM compiler.
 The results should look like this. 
 
 ### Sample output
@@ -327,6 +327,13 @@ Souper IR.
 %0:i8 = shl 32:i8, %x
 infer %0
 ```
+
+This specifies a shift left operation of a 8-bit
+constant value `32` by an unknown shift
+amount labelled by `%x`. The question is to
+compute known bits information for `%0` i.e.
+`32 << %x` from both compiler and our tool - Souper.
+
 ### Workflow
 
 - When computing facts by Souper - How it works?
@@ -343,7 +350,7 @@ dataflow functions to compute results from compiler.
 
 ### Dataflow information
 The result is a 8-bit known bits information for shift-left
-operation `(32 << x)`. The `x` in the result indicates that
+operation `(32 << %x)`. The `x` in the result indicates that
 a bit is unknown, `0` means that a bit is known zero, `1`
 means that a bit is known one.
 
@@ -355,6 +362,9 @@ precise than LLVM compiler.
 Likewise, you can now analyze other examples included in the result.
 
 ## Section 4.3
+
+You are analyzing the power of two dataflow
+analysis results. The output should look like this.
 
 ### Sample output
 
@@ -373,8 +383,36 @@ known powerOfTwo from compiler: false
 ; Using solver: Z3 + internal cache
 ```
 
+### Input
+The first part is input written in Souper IR.
+```
+%x:i64 = var (range=[1,3))
+infer %x
+```
+What does it mean? This is an input variable
+of 64-bits with a given range [1,3) in which
+lower bound `1` is included, but upper bound
+`3` is excluded. In short, the input variable
+labelled `%x` in above Souper IR is a number in
+the set `{1, 2}`.
+
+Now, we question if this is a power of two or not
+from both Souper and LLVM compiler.
+
+### Dataflow information
+
+The result computed by compiler is `false` that means
+LLVM compiler cannot prove that it input
+variable with specified range is a power of two.
+However, Souper returns the result `true` that is it
+can prove that given input test is a power of two.
+
+Now, you can analyze rest of the examples in this section.
+
 ## Section 4.4
 
+You are analyzing demanded bits results in this section.
+The output should look like this.
 ```
 ===========================================
  Evaluation: (Demanded bits) Section 4.4
@@ -389,6 +427,13 @@ demanded-bits from souper for %x : 10000000
 demanded-bits from compiler for var_x : 11111111
 ; Listing valid replacements.
 ; Using solver: Z3 + internal cache
+```
+
+### Input
+The input in this case is:
+```
+%x:i64 = var (range=[1,3))
+infer %x
 ```
 
 
@@ -412,6 +457,66 @@ known at return: [-1,-1)
 ```
 
 ## Section 4.6
+
+### Sample output
+```
+============================
+   Performance Evaluation
+============================
+
+Preparing file ...
+1024+0 records in
+1024+0 records out
+1073741824 bytes (1.1 GB, 1.0 GiB) copied, 16.3392 s, 65.7 MB/s
+Created a file: 1gb
+
+***************************
+Testing #1: bzip2
+***************************
+
+Iteration #1: computing baseline compression time
+
+Iteration #1: computing precise compression time
+
+
+Iteration #1: computing baseline decompression time
+
+Iteration #1: computing precise compression time
+
+
+Iteration #2: computing baseline compression time
+```
+
+```
+***************************
+Testing #2: gzip
+***************************
+
+Iteration #1: computing baseline compression time
+
+Iteration #1: computing precise compression time
+
+
+Iteration #1: computing baseline decompression time
+
+Iteration #1: computing precise decompression time
+
+
+```
+
+```
+***************************
+Testing #3: Sqlite
+***************************
+
+Iteration #1: Baseline SQLite run
+
+
+Iteration #1: Precise SQLite run
+
+
+Iteration #2: Baseline SQLite run
+```
 
 The results are saved in:
 - bzip2: result-bzip2.txt
