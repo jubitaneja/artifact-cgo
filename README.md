@@ -116,6 +116,10 @@ $ cd /usr/src/artifact-cgo/performance/test
 $ ./test_performance.sh
 ```
 
+This will take about 40-50 minutes to finish. If you
+want to understand what's happening, please refer the
+details mentioned [further](https://github.com/jubitaneja/artifact-cgo#section-46).
+
 ### Evaluation: Section 4.7
 This section evaluates three soundness bugs
 as discussed in the paper. Run the script:
@@ -282,14 +286,19 @@ as a result.
 
 Now, to reproduce the numbers as shown in Table 1
 in the paper, you just have to run this 
-[script]()
+[script](https://github.com/jubitaneja/artifact-cgo/blob/master/section-4.1/extra-scripts/process-all.sh).
 
+```
+# Go to the main directory of this repo.
 
-This script will
-give you the count of parameters like,
+$ export CGO_HOME=$(pwd)/artifact-cgo
+$ cd $CGO_HOME
+$ ./section-4.1/extra-scripts/process-all.sh
+```
+
+This script will give you the count of parameters like,
 `Souper is more precise`, `LLVM is more precise`,
-`Same precision`, `Resource exhaustion`, 
-`Average time per expression`.
+`Same precision`, `Resource exhaustion`.
 
 You may find non-zero number of `llvm is stronger`
 cases for some analyses. These should be manually
@@ -528,7 +537,19 @@ section.
 
 ## Section 4.6
 
+In this section, you are analyzing the results
+shown in Table 2 in the paper. When you will
+run the specified scripts in Docker, the output
+should look like this.
+
 ### Sample output Log on the console
+This is how the output should look on the console.
+You can ignore these messages, these are
+just added to give you an idea about
+what is happening. We iterate each experiment
+for three times and compute the average speedup
+at the end.
+
 ```
 ============================
    Performance Evaluation
@@ -555,6 +576,7 @@ Iteration #1: computing precise compression time
 
 
 Iteration #2: computing baseline compression time
+...
 ```
 
 ```
@@ -571,7 +593,7 @@ Iteration #1: computing baseline decompression time
 
 Iteration #1: computing precise decompression time
 
-
+...
 ```
 
 ```
@@ -597,13 +619,95 @@ Iteration #1: Baseline stockfish run
 Stockfish 10 64 POPCNT by T. Romstad, M. Costalba, J. Kiiski, G. Linscott
 info depth 1 seldepth 1 multipv 1 score cp 116 nodes 20 nps 10000 tbhits 0 time 2 pv e2e4
 info depth 2 seldepth 2 multipv 1 score cp 112 nodes 54 nps 27000 tbhits 0 time 2 pv e2e4 b7b6
+...
 
 ```
+
 ### Final ouput on console
 
 ```
+===================================
+Final result of bzip2
+===================================
+
+
+Avg Baseline Compression time = 296.663333333 sec
+
+Avg Precise Compression time = 242.42 sec
+
+
+
+Speedup in compression time = 18.2844751065%
+------------------------------------------------
+
+
+Avg Baseline Decompression time = 130.13 sec
+
+Avg Precise Decompression time = 131.036666667 sec
+
+
+
+Speedup in decompression time = -0.696739158278%
+------------------------------------------------
 ```
 
+```
+===================================
+Final result of gzip
+===================================
+
+
+Avg Baseline Compression time = 58.1166666667 sec
+
+Avg Precise Compression time = 58.8833333333 sec
+
+
+
+Speedup in compression time = -1.31918554631%
+------------------------------------------------
+
+
+Avg Baseline Decompression time = 10.32 sec
+
+Avg Precise Decompression time = 10.37 sec
+
+
+
+Speedup in decompression time = -0.484496124031%
+------------------------------------------------
+```
+
+```
+===================================
+Final result of SQLite
+===================================
+
+
+Avg Baseline SQLite = 82.69 sec
+
+Avg Precise SQLite = 80.0566666667 sec
+
+
+
+Speedup in SQLite = 3.18458499617%
+------------------------------------------------
+```
+
+```
+===================================
+Final result of Stockfish
+===================================
+
+
+Avg total time for Baseline Stockfish = 270.563333333 sec
+
+Avg total time for Precise Stockfish = 268.328sec
+
+
+
+Speedup in SQLite = 0.826177481551%
+------------------------------------------------
+```
 
 The results are saved in:
 - bzip2: result-bzip2.txt
