@@ -1,7 +1,7 @@
 This repository guides you to build and test
 our work that we submitted to **CGO 2020**.
 
-There are two ways you can reproduce the results.
+There are two ways to reproduce the results.
 - Following the instructions to use a pre-compiled [docker image](https://github.com/jubitaneja/artifact-cgo#approach-1-using-docker-image).
 - Following the instructions to 
 [build from scratch](https://github.com/jubitaneja/artifact-cgo#approach-2-building-from-scratch).
@@ -89,7 +89,7 @@ to reproduce the results.
 ### Evaluation: Section 4.2 to 4.5
 These sections evaluates the precision of several
 dataflow analyses as shown in examples in the paper.
-Runt the script to reproduce the results.
+Run the script to reproduce the results.
 ```
 $ cd /usr/src/artifact-cgo/precision/test
 $ ./test_precision.sh
@@ -98,7 +98,7 @@ $ ./test_precision.sh
 ### Evaluation: Section 4.6
 This section measures the impact of precision
 of dataflow analysis. We test compression
-applications, like Bzip2, bzip; SQLite;
+applications, like Bzip2, gzip; SQLite;
 and a chess engine, Stockfish as shown
 presented in Table 2 in paper.
 
@@ -167,7 +167,8 @@ Codename:       bionic
 
 There are certain requirements for different
 tools and compiler. For this, you can either run the
-`prepare_req.sh` script or follow the instructions
+[prepare_req.sh](https://github.com/jubitaneja/artifact-cgo/blob/master/prepare_req.sh)
+script or follow the instructions
 for each pre-requisite separately.
 
 ### Approach 1: Use script
@@ -811,5 +812,31 @@ This is not giving us any relevant information, so
 you can ignore these parts.
 
 # Customization: How to use our tool for extended testing?
+
+You can easily customize test inputs written in Souper IR,
+and try different dataflow facts options to compute the
+precise dataflow facts using our tool.
+
+If you are interested in taking a look at more test
+inputs, you can refer to the Souper testsuite to find
+files with name `*known*.opt`, `power*.opt`, `sign*.opt`,
+`range*.opt`, `demanded*.opt` [here](https://github.com/google/souper/tree/master/test/Tool).
+
+The list of options that you can use to compute precise
+dataflow facts using our SMT solver-based algorithms,
+and from LLVM compiler are as shown in the Table below.
+
+| Dataflow Analysis            |                                 Options for DFA computed by Souper |    Options for DFA computed by LLVM |
+|------------------------------|-------------------------------------------------------------------:|------------------------------------:|
+| Utility that takes arguments |                                                       souper-check |                              souper |
+| Known bits                   |                                                  -infer-known-bits |              -print-known-at-return |
+| Sign bits                    |                                                   -infer-sign-bits |          -print-sign-bits-at-return |
+| Negative                     |                                                         -infer-neg |                -print-neg-at-return |
+| Non-negative                 |                                                     -infer-non-neg |             -print-nonneg-at-return |
+| Non-zero                     |                                                    -infer-non-zero |           -print-non-zero-at-return |
+| Power of two                 |                                                   -infer-power-two |          -print-power-two-at-return |
+| Integer Range                | -infer-range -souper-range-maz-precise -souper-range-max-tries=300 |              -print-range-at-return |
+| Demanded bits                |                                               -infer-demanded-bits | -print-demanded-bits-from-harvester |
+
 
 
