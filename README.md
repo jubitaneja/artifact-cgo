@@ -623,8 +623,18 @@ info depth 2 seldepth 2 multipv 1 score cp 112 nodes 54 nps 27000 tbhits 0 time 
 
 ```
 
-### Final ouput on console
+### Final output on console
+At the end, you will should see the
+final results for each benchmark as
+shown below.
 
+#### Bzip2
+For bzip2, you will find average compression/
+decompression time for both baseline and precise version.
+If you want to check individual result of
+each iteration, you can check the file:
+`result-bzip.txt` in Docker at path:
+`/usr/src/artifact-cgo/performance/test/`
 ```
 ===================================
 Final result of bzip2
@@ -651,6 +661,13 @@ Speedup in decompression time = -0.696739158278%
 ------------------------------------------------
 ```
 
+#### Gzip
+For gzip2, you will find average compression/
+decompression time for both baseline and precise version.
+If you want to check individual result of
+each iteration, you can check the file:
+`result-gzip.txt` in Docker at path:
+`/usr/src/artifact-cgo/performance/test/`
 ```
 ===================================
 Final result of gzip
@@ -677,6 +694,16 @@ Speedup in decompression time = -0.484496124031%
 ------------------------------------------------
 ```
 
+#### SQLite
+For SQLite, you will find average
+time to process `100` selects on a SQL
+database with `2,500,000` insertions,
+for both baseline and precise version.
+If you want to check individual result of
+each iteration, you can check the file:
+`result-sqlite.txt` in Docker at path:
+`/usr/src/artifact-cgo/performance/test/`
+
 ```
 ===================================
 Final result of SQLite
@@ -692,6 +719,16 @@ Avg Precise SQLite = 80.0566666667 sec
 Speedup in SQLite = 3.18458499617%
 ------------------------------------------------
 ```
+
+#### Stockfish
+For Stockfish, you will find total
+time for computing the next move in
+`42` chess games that are part of its
+test suite, for both baseline and precise version.
+If you want to check individual result of
+each iteration, you can check the file:
+`result-stockfish.txt` in Docker at path:
+`/usr/src/artifact-cgo/performance/test/`
 
 ```
 ===================================
@@ -709,15 +746,9 @@ Speedup in SQLite = 0.826177481551%
 ------------------------------------------------
 ```
 
-The results are saved in:
-- bzip2: result-bzip2.txt
-- gzip: result-gzip.txt
-- stockfish: result-stockfish.txt
-- sqlite: result-sqlite.txt
-
-The speedup numbers may vary depending on which
+**NOTE: **The speedup numbers may vary depending on which
 architecture you are using, and what is the configuration
-of the processor.
+of the machine or because of several other factors.
 
 ## Section 4.7
 
