@@ -596,82 +596,8 @@ info depth 2 seldepth 2 multipv 1 score cp 112 nodes 54 nps 27000 tbhits 0 time 
 
 ```
 ### Final ouput on console
+
 ```
-===================================
-Final result of bzip2
-===================================
-
-
-Avg Baseline Compression time = 297.173333333 sec
-
-Avg Precise Compression time = 298.463333333 sec
-
-
-
-Speedup in compression time = -0.434090093324%
-------------------------------------------------
-
-
-Avg Baseline Decompression time = 130.29 sec
-
-Avg Precise Decompression time = 133.043333333 sec
-
-
-
-Speedup in decompression time = -2.11323457927%
-------------------------------------------------
-
-
-===================================
-Final result of gzip
-===================================
-
-
-Avg Baseline Compression time = 58.3 sec
-
-Avg Precise Compression time = 58.7266666667 sec
-
-
-
-Speedup in compression time = -0.731846769583%
-------------------------------------------------
-Avg Baseline Decompression time = 10.3366666667 sec
-
-Avg Precise Decompression time = 10.44 sec
-
-
-
-Speedup in decompression time = -0.99967752338%
-------------------------------------------------
-
-
-===================================
-Final result of SQLite
-===================================
-
-
-Avg Baseline SQLite = 81.3666666667 sec
-
-Avg Precise SQLite = 79.16 sec
-
-
-
-Speedup in SQLite = 2.71200327735%
-------------------------------------------------
-
-
-===================================
-Final result of Stockfish
-===================================
-
-Avg total time for Baseline Stockfish = 272.391666667 sec
-
-Avg total time for Precise Stockfish = 269.726sec
-
-
-
-Speedup in SQLite = 0.978615351669%
-------------------------------------------------
 ```
 
 
