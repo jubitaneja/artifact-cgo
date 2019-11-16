@@ -828,7 +828,6 @@ and from LLVM compiler are as shown in the Table below.
 
 | Dataflow Analysis            |                                 Options for DFA computed by Souper |    Options for DFA computed by LLVM |
 |------------------------------|-------------------------------------------------------------------:|------------------------------------:|
-| Utility that takes arguments |                                                       souper-check |                              souper |
 | Known bits                   |                                                  -infer-known-bits |              -print-known-at-return |
 | Sign bits                    |                                                   -infer-sign-bits |          -print-sign-bits-at-return |
 | Negative                     |                                                         -infer-neg |                -print-neg-at-return |
