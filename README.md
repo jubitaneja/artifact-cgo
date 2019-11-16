@@ -746,7 +746,7 @@ Speedup in SQLite = 0.826177481551%
 ------------------------------------------------
 ```
 
-**NOTE: **The speedup numbers may vary depending on which
+**NOTE**: The speedup numbers may vary depending on which
 architecture you are using, and what is the configuration
 of the machine or because of several other factors.
 
