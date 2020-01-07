@@ -1,0 +1,16 @@
+; REQUIRES: solver, synthesis
+; RUN: %souper-check -infer-rhs -souper-exhaustive-synthesis -souper-exhaustive-synthesis-num-instructions=1 %solver %s > %t1
+; RUN: %FileCheck %s -check-prefix=TEST1 < %t1
+; RUN: %souper-check -infer-rhs -souper-exhaustive-synthesis -souper-exhaustive-synthesis-num-instructions=2 %solver %s > %t2
+; RUN: %FileCheck %s -check-prefix=TEST2 < %t2
+
+; test trunk insertion.
+%0:i8 = var
+%1:i8 = urem %0, 2
+%2:i1 = eq %1, 0
+%3:i8 = select %2, 42:i8, %0
+infer %3
+
+; TEST1: Failed to infer RHS
+; TEST2: trunc %0
+; TEST2: select %4, %0, 42:i8

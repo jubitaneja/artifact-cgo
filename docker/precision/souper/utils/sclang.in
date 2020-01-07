@@ -1,0 +1,284 @@
+#!/usr/bin/env perl
+
+# Copyright 2014 The Souper Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+use warnings;
+use strict;
+use File::Temp;
+
+sub compiling() {
+    foreach my $arg (@ARGV) {
+        return 1
+            if ($arg =~ /\.c$|\.cpp$|\.CC$|\.c\+\+$|\.cc$|\.cxx$|\.C$|\.c\+$/);
+    }
+    return 0;
+}
+
+sub linkp() {
+    foreach my $arg (@ARGV) {
+        return 0 if ($arg eq "-S" || $arg eq "-c" || $arg eq "-shared");
+    }
+    return 1;
+}
+
+if ($0 =~ /clang$/) {
+    unshift @ARGV, "@LLVM_BINDIR@/clang";
+} elsif ($0 =~ /clang\+\+$/) {
+    unshift @ARGV, "@LLVM_BINDIR@/clang++";
+} else {
+    die "Didn't expect sclang to be invoked as '$0'";
+}
+
+foreach my $arg (@ARGV) {
+    if ($arg eq "-help" || $arg eq "--help") {
+	print <<EOF;
+
+sclang / sclang++ emulate clang / clang++ except that they also invoke
+Souper.
+
+To avoid the need to mess with build systems, communication with these
+programs is via environment variables. Unless noted, the value of the
+environment variable is irrelevant: sclang only checks if it is set.
+
+SOUPER_DEBUG -- Print debugging info.
+
+SOUPER_DYNAMIC_PROFILE -- Instrument the compiled program such that,
+when run, it will communicate with a running Redis instance in order
+to report how many times each optimized code site executes.
+
+SOUPER_DYNAMIC_PROFILE_ALL -- Like SOUPER_DYNAMIC_PROFILE but
+instruments each site that is potentially optimizable by Souper, as
+opposed to sites that actually get optimized. Should be used in
+combination with SOUPER_NO_INFER.
+
+SOUPER_EXPLOIT_BLOCKPCS -- Optimize using blockpcs.
+
+SOUPER_FIRST_OPT / SOUPER_LAST_OPT -- Assign a number to each
+optimization found in the current compilation unit and only perform
+those that fall within the range [SOUPER_FIRST_OPT
+.. SOUPER_LAST_OPT], inclusive. Used for debugging Souper
+
+SOUPER_INFER_INT -- Try to synthesize constants.
+
+SOUPER_INFER_NOP -- Try to synthesize nops: Optimizations where the
+output is equivalent to one of its inputs. For example, this
+expression can be optimized to a nop: x = bswap(bswap(x))
+
+SOUPER_INFER_INST -- Try to synthesis instructions with InstSynthesis
+synthesizer.
+
+SOUPER_EXHAUSTIVE_SYNTHESIS -- Try to synthesize instructions with
+ExhaustiveSynthesis synthesizer.
+
+SOUPER_DATAFLOW_PRUNING -- Enable dataflow pruning. This only makes sense
+when ExhaustiveSynthesis is enabled.
+
+SOUPER_REDIS_PORT -- Mention the port to use the redis-server on.
+
+SOUPER_NO_EXPLOIT_UB -- Do not exploit LLVM-level undefined behavior
+when making inferences.
+
+SOUPER_NO_EXTERNAL_CACHE -- Don't ask the running Redis instance for
+cached inferences.
+
+SOUPER_NO_HARVEST_DATAFLOW_FACTS -- Don't query LLVM's bit-level dataflow
+analyses when harvesting.
+
+SOUPER_HARVEST_DEMANDED_BITS -- Query LLVM's demanded bits dataflow
+analysis when harvesting.
+
+SOUPER_HARVEST_USES -- This option enables the harvest of LLVM uses.
+
+SOUPER_NO_INFER -- Don't run inference at all; used for populating the
+cache.
+
+SOUPER_NO_SOUPER -- Don't run Souper at all.
+
+SOUPER_SAVE_BITCODE -- The value of this variable is the name of a
+directory where a copy of the bitcode for the compiled file will be
+stored.
+
+SOUPER_SKIP_FILES -- Do not apply Souper (as if SOUPER_NO_SOUPER were
+set) to any of the comma-separated list of files found in the value of
+this variable.
+
+SOUPER_SOLVER -- The SAT solver for Souper to use, e.g.
+-z3-path=/usr/bin/z3.
+
+SOUPER_STATIC_PROFILE -- During compilation, communicate with a running
+Redis instance in order to record the number of times each optimization
+was performed.
+
+SOUPER_USE_ALIVE -- Send queries to Alive2
+
+LLVM_DISABLE_INSTRUCTION_COMBINER -- Disable the invocation of instruction
+combiner during compilation.
+
+SOUPER_STATS -- Ask LLVM to print statistics.
+
+EOF
+        exit(-1);
+    }
+}
+
+my $bitcodedir = $ENV{"SOUPER_SAVE_BITCODE"};
+if (defined $bitcodedir && -d $bitcodedir && fork() == 0) {
+    for (my $i=0; $i<scalar(@ARGV); $i++) {
+	splice @ARGV, $i, 2 if ($ARGV[$i] eq "-o");
+    }
+    my $tmp = File::Temp->new(UNLINK => 1, DIR => $bitcodedir)->filename;
+    push @ARGV, "-c", "-emit-llvm";
+    push @ARGV, "-o", "${tmp}.bc";
+    my $ofn = "${tmp}.cmd";
+    open OUTF, ">$ofn" or die;
+    foreach my $a (@ARGV) {
+	print OUTF "$a ";
+    }
+    print OUTF "\n";
+    close OUTF;
+    open STDOUT, '>/dev/null';
+    open STDERR, '>/dev/null';
+    exec @ARGV;
+    die "bailing, exec failed";
+}
+
+die "$0 requires the SOUPER_SOLVER environment variable to be defined, e.g. as -stp-path=/path/to/stp"
+    unless exists $ENV{"SOUPER_SOLVER"};
+my $solver = $ENV{"SOUPER_SOLVER"};
+
+my $souper = 1;
+# this environment variable is a comma-separated list of source files that
+# souper should avoid processing, for example because they trigger known bugs
+if (exists $ENV{"SOUPER_SKIP_FILES"}) {
+    my %skips;
+    foreach my $f (split(',', $ENV{"SOUPER_SKIP_FILES"})) {
+        $skips{$f} = 1;
+    }
+    foreach my $a (@ARGV) {
+        $souper = 0 if ($skips{$a});
+    }
+}
+
+$souper = 0 if exists $ENV{"SOUPER_NO_SOUPER"};
+$souper = 0 unless compiling();
+
+if ($souper) {
+    push @ARGV, (
+        "-Xclang", "-load",
+        "-mllvm", $solver,
+        "-mllvm", "-solver-timeout=15",
+    );
+
+    if (exists $ENV{"SOUPER_DYNAMIC_PROFILE_ALL"}) {
+	push @ARGV, ("-Xclang", "@SOUPER_PASS_PROFILE_ALL@");
+    } else {
+	push @ARGV, ("-Xclang", "@SOUPER_PASS@");
+    }
+
+    if (exists $ENV{"SOUPER_DEBUG"}) {
+        push @ARGV, ("-mllvm", "-souper-debug-level=".$ENV{"SOUPER_DEBUG"});
+    }
+
+    if (exists $ENV{"SOUPER_EXPLOIT_BLOCKPCS"}) {
+        push @ARGV, ("-mllvm", "-souper-exploit-blockpcs");
+    }
+
+    if (exists $ENV{"SOUPER_NO_EXPLOIT_UB"}) {
+        push @ARGV, ("-mllvm", "-souper-exploit-ub=false");
+    }
+
+    if (!exists $ENV{"SOUPER_NO_EXTERNAL_CACHE"}) {
+        push @ARGV, ("-mllvm", "-souper-external-cache");
+    }
+
+    if (exists $ENV{"SOUPER_NO_INFER"}) {
+        push @ARGV, ("-mllvm", "-souper-no-infer");
+    }
+
+    if (exists $ENV{"SOUPER_FIRST_OPT"}) {
+        push @ARGV, ("-mllvm", "-souper-first-opt=".$ENV{"SOUPER_FIRST_OPT"});
+    }
+
+    if (exists $ENV{"SOUPER_LAST_OPT"}) {
+        push @ARGV, ("-mllvm", "-souper-last-opt=".$ENV{"SOUPER_LAST_OPT"});
+    }
+
+    if (exists $ENV{"SOUPER_STATIC_PROFILE"}) {
+        push @ARGV, ("-mllvm", "-souper-static-profile");
+    }
+
+    if (exists $ENV{"SOUPER_DYNAMIC_PROFILE"} ||
+	exists $ENV{"SOUPER_DYNAMIC_PROFILE_ALL"}) {
+        push @ARGV, ("-g", "-mllvm", "-souper-dynamic-profile");
+    }
+
+    if (exists $ENV{"SOUPER_USE_ALIVE"}) {
+        push @ARGV, ("-mllvm", "-souper-use-alive");
+    }
+
+    if (exists $ENV{"SOUPER_INFER_INT"}) {
+      push @ARGV, ("-mllvm", "-souper-infer-iN");
+    }
+
+    if (exists $ENV{"SOUPER_INFER_NOP"}) {
+      push @ARGV, ("-mllvm", "-souper-infer-nop");
+    }
+
+    if (exists $ENV{"SOUPER_INFER_INST"}) {
+      push @ARGV, ("-mllvm", "-souper-infer-inst");
+    }
+
+    if (exists $ENV{"SOUPER_EXHAUSTIVE_SYNTHESIS"}) {
+      push @ARGV, ("-mllvm", "-souper-exhaustive-synthesis");
+    }
+
+    if (exists $ENV{"SOUPER_DATAFLOW_PRUNING"}) {
+      push @ARGV, ("-mllvm", "-souper-dataflow-pruning");
+    }
+
+    if (exists $ENV{"SOUPER_REDIS_PORT"}) {
+      push @ARGV, ("-mllvm", "-souper-redis-port=".$ENV{"SOUPER_REDIS_PORT"});
+    }
+
+    if (exists $ENV{"SOUPER_STATS"}) {
+        push @ARGV, ("-mllvm", "-stats");
+    }
+    if (exists $ENV{"SOUPER_NO_HARVEST_DATAFLOW_FACTS"}) {
+        push @ARGV, ("-mllvm", "-souper-harvest-dataflow-facts=false");
+    }
+    if (exists $ENV{"SOUPER_HARVEST_DEMANDED_BITS"}) {
+        push @ARGV, ("-mllvm", "-souper-harvest-demanded-bits");
+    }
+    if (exists $ENV{"SOUPER_HARVEST_USES"}) {
+        push @ARGV, ("-mllvm", "-souper-harvest-uses");
+    }
+    if (exists $ENV{"LLVM_DISABLE_INSTRUCTION_COMBINER"}) {
+        push @ARGV, ("-mllvm", "-disable-instruction-combiner");
+    }
+}
+
+if ((exists $ENV{"SOUPER_DYNAMIC_PROFILE"} ||
+     exists $ENV{"SOUPER_DYNAMIC_PROFILE_ALL"}) && linkp()) {
+    push @ARGV, ("@PROFILE_LIBRARY@", "@HIREDIS_LIBRARY@");
+}
+
+if (exists $ENV{"SOUPER_DEBUG"}) {
+    foreach my $arg (@ARGV) {
+        print STDERR "$arg ";
+    }
+    print STDERR "\n";
+}
+
+exec @ARGV;

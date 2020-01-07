@@ -1,0 +1,344 @@
+#!/usr/bin/env perl
+
+# Copyright 2014 The Souper Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+use warnings;
+use strict;
+use Redis;
+use File::Temp;
+use Time::HiRes;
+
+eval { require Sys::CPU; Sys::CPU->import(); };
+my $NPROCS = 4;
+$NPROCS = Sys::CPU::cpu_count() if defined(&Sys::CPU::cpu_count);
+
+my $souper = "@CMAKE_BINARY_DIR@/souper";
+my $llvmas = "@LLVM_BINDIR@/llvm-as";
+my $llvmopt = "@LLVM_BINDIR@/opt";
+my $llvmdis = "@LLVM_BINDIR@/llvm-dis";
+my $check = "@CMAKE_BINARY_DIR@/souper-check";
+my $triager = "@CMAKE_BINARY_DIR@/souper2llvm-db";
+
+sub runit ($) {
+    my $cmd = shift;
+    my $res = (system "$cmd");
+    return $? >> 8;
+}
+
+my $NOOPTS = 0;
+my $SORT = "size";
+my $TRIAGE = 1;
+my $VERBOSE = 0;
+my $VERIFY = 0;
+
+my $noopt_count=0;
+my %values;
+my %sprofiles;
+my %dprofiles;
+my %sprofile_locs;
+my %dprofile_locs;
+my %toprint;
+my %known;
+
+my $r = Redis->new();
+$r->ping || die "no server?";
+my @all_keys = $r->keys('*');
+
+print "; Inspecting ".scalar(@all_keys)." Redis values\n";
+
+my $solver = $ENV{"SOUPER_SOLVER"};
+die unless $solver;
+
+sub souper_known ($) {
+    (my $opt) = @_;
+
+    (my $fh, my $tmpfn) = File::Temp::tempfile();
+    print $fh $opt;
+    $fh->flush();
+    my $arg = "-infer-demanded-bits -solver-timeout=30";
+    my $cmd = "${check} $solver $arg < $tmpfn 2>/dev/null |";
+    # print "<${cmd}>\n";
+    open INF, $cmd;
+    my $k = "";
+    my $delim = "#";
+    while (my $line = <INF>) {
+	    chomp $line;
+	    if ($line =~ /demanded-bits from souper (.*)$/) {
+	      $k .= $delim . $1;
+	    }
+    }
+    close INF;
+    close $fh;
+    unlink $tmpfn;
+    print $opt if not defined $k;
+    return $k;
+}
+
+sub add_sprofile($$) {
+    (my $opt, my $href) = @_;
+    my %h = %{$href};
+    foreach my $k (keys %h) {
+        $sprofile_locs{$opt}{$k} += $h{$k};
+    }
+    if (!$sprofile_locs{$opt}) {
+        $sprofile_locs{$opt} = {};
+    }
+}
+
+sub add_dprofile($$) {
+    (my $opt, my $href) = @_;
+    my %h = %{$href};
+    foreach my $k (keys %h) {
+        $dprofile_locs{$opt}{$k} += $h{$k};
+    }
+    if (!$dprofile_locs{$opt}) {
+        $dprofile_locs{$opt} = {};
+    }
+}
+
+my $xcnt = 0;
+foreach my $opt (@all_keys) {
+    # last if (++$xcnt > 100);
+    my %h = $r->hgetall($opt);
+    my $result = $h{"result"};
+    my $known = $h{"known"};
+    my $sprofile = 0;
+    my $dprofile = 0;
+    my %sprofile_loc;
+    my %dprofile_loc;
+    foreach my $kk (keys %h) {
+        if ($kk =~ /^sprofile (.*)$/) {
+            my $count = $h{$kk};
+            $sprofile += $count;
+            $sprofile_loc{$1} += $count;
+        }
+        if ($kk =~ /^dprofile (.*)$/) {
+            my $count = $h{$kk};
+            $dprofile += $count;
+            $dprofile_loc{$1} += $count;
+        }
+    }
+    if (defined $result) {
+	$opt .= $result;
+	if ($result eq "") {
+	    $noopt_count++;
+	}
+    }
+    $known{$opt} = $known;
+    $toprint{$opt} = 1;
+    add_sprofile($opt, \%sprofile_loc);
+    add_dprofile($opt, \%dprofile_loc);
+    $sprofiles{$opt} = $sprofile;
+    $dprofiles{$opt} = $dprofile;
+}
+
+sub replace($$) {
+    (my $old, my $new) = @_;
+    die if $new eq "";
+    $sprofiles{$new} += $sprofiles{$old};
+    $dprofiles{$new} += $dprofiles{$old};
+    my %ss = %{$sprofile_locs{$old}};
+    add_sprofile($new, \%ss);
+    my %dd = %{$dprofile_locs{$old}};
+    add_dprofile($new, \%dd);
+    $toprint{$new} = 1;
+    delete $toprint{$old};
+}
+
+sub remove($) {
+    (my $opt) = @_;
+    delete $toprint{$opt};
+    delete $sprofiles{$opt};
+    delete $dprofiles{$opt};
+    delete $sprofile_locs{$opt};
+    delete $dprofile_locs{$opt};
+}
+
+my $status_cnt;
+my $status_opct;
+my $status_total;
+
+sub reset_status($) {
+    (my $t) = @_;
+    $status_total = $t;
+    $status_opct = 0;
+    $status_cnt = 0;
+}
+
+sub status() {
+    print ".";
+    $status_cnt++;
+    my $pct = int(100.0*$status_cnt/$status_total);
+    if ($pct > $status_opct) {
+        $status_opct = $pct;
+        print "$pct %\n";
+    }
+}
+
+sub total_profile_count() {
+    my $cnt = 0;
+    foreach my $opt (keys %toprint) {
+        $cnt += $sprofiles{$opt} + $dprofiles{$opt};
+    }
+    return $cnt;
+}
+
+### HACK remove incoming known bits until souper2llvm can deal with them
+if (0) {
+    my @keys = keys %toprint;
+    foreach my $opt (@keys) {
+	my $newopt = $opt;
+	$newopt =~ s/ \(.*\)//gm;
+	if ($opt ne $newopt) {
+	    replace($opt, $newopt);
+	}
+    }
+}
+
+sub llvm_known($) {
+    (my $opt) = @_;
+    (my $fh1, my $fn1) = File::Temp::tempfile();
+    print $fh1 $opt;
+    close $fh1;
+    open INF, "$triager < $fn1 | $llvmas | $souper -print-demanded-bits-from-harvester |" or die;
+    my $known;
+    my $delim = "#";
+    while (my $line = <INF>) {
+	    chomp $line;
+	    if ($line =~ /demanded-bits from compiler (.*)$/) {
+	      #$known = $1;
+        $known .= $delim . $1;
+	    }
+    }
+    close INF;
+    print $opt if not defined $known;
+    return $known if defined $known;
+    return "oops";
+}
+
+sub bylen { length $a <=> length $b }
+sub bysprofile { $sprofiles{$b} <=> $sprofiles{$a} }
+sub bydprofile { $dprofiles{$b} <=> $dprofiles{$a} }
+
+print "\n\n";
+
+sub go {
+    (my $opt, my $counter) = @_;
+    print "LHS Counter = $counter\n";
+    my $ret = "";
+    $ret .= "$opt";
+    $ret .= "\n";
+
+    my $sk = souper_known($opt);
+    my @souper_values = split('#', $sk);
+    foreach my $souper_val (@souper_values) {
+      if ($souper_val ne '') {
+        #$ret .= "demanded-bits from Souper:   $sk\n";
+        $ret .= "demanded-bits from Souper:   $souper_val\n";
+      }
+    }
+    my $lk;
+    if (0) {
+	$lk = $known{$opt};
+	if (!defined($lk)) {
+	    $lk = "";
+	    for (my $i=0; $i<length($sk); $i++) {
+		$lk .= "1";
+	      }
+	    }
+    } else {
+	    $lk = llvm_known($opt);
+    }
+    my @llvm_values = split('#', $lk);
+    foreach my $llvm_val (@llvm_values) {
+      if ($llvm_val ne '') {
+        $ret .= "demanded-bits from compiler: $llvm_val\n";
+      }
+    }
+
+    my $print = 0;
+    if ($sk ne $lk) {
+	    $print = 1;
+	    #die unless length($lk) == length($sk);
+#	my $llvm_stronger = 0;
+#	my $souper_stronger = 0;
+#	for (my $i=0; $i<length($lk); $i++) {
+#	    if ((substr($sk,$i,1) eq "1") && (substr($lk,$i,1) eq "0")) {
+#		$llvm_stronger = 1;
+#	    }
+#	    if ((substr($lk,$i,1) eq "1") && (substr($sk,$i,1) eq "0")) {
+#		$souper_stronger = 1;
+#	    }
+#	}
+#	if ($llvm_stronger && $souper_stronger) {
+#	    $ret .= "neither is stronger";
+#	} elsif ($llvm_stronger) {
+#	    $ret .= "llvm is stronger";
+#	} elsif ($souper_stronger) {
+#	    $ret .= "souper is stronger";
+#	} else {
+#	    die;
+#	}
+	    $ret .= "\n";
+    }
+    $ret .= "\n";
+    $ret .= "; total static profile = $sprofiles{$opt}\n";
+#    my %h = %{$sprofile_locs{$opt}};
+#    foreach my $k (sort { $h{$b} <=> $h{$a} } keys %h) {
+#        next if ($k eq "");
+#        $ret .= "; sprofile $h{$k} \"$k\"\n";
+#    }
+    $ret .= "; total dynamic profile = $dprofiles{$opt}\n";
+#    %h = %{$dprofile_locs{$opt}};
+#    foreach my $k (sort { $h{$b} <=> $h{$a} } keys %h) {
+#        next if ($k eq "");
+#        $ret .= "; dprofile $h{$k} \"$k\"\n";
+#    }
+    $ret .= "------------------------------------------------------\n\n";
+#    print $ret if $print;
+    if ($print) {
+        my $fname = 'demandedbits_' . sprintf("%08d", $counter);
+        open(my $fh, '>', $fname);
+        print $fh $ret;
+        close $fh;
+    }
+    exit();
+}
+
+my $num_running = 0;
+my $opid = $$;
+
+sub wait_for_one() {
+    my $xpid = wait();
+    die if $xpid == -1;
+    $num_running--;
+}
+
+my $counter=0;
+foreach my $opt (sort bylen keys %toprint) {
+    $counter++;
+    wait_for_one() unless $num_running < $NPROCS;
+    die unless $num_running < $NPROCS;
+    my $pid = fork();
+    die unless $pid >= 0;
+    go($opt, $counter) if $pid == 0;
+    # make sure we're in the parent
+    die unless $$ == $opid;
+    $num_running++;
+}
+
+wait_for_one() while $num_running > 0;
+
+print "\n\nDone.\n";

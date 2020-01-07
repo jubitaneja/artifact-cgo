@@ -1,0 +1,40 @@
+Index: lib/Analysis/ValueTracking.cpp
+===================================================================
+--- lib/Analysis/ValueTracking.cpp	(revision 375507)
++++ lib/Analysis/ValueTracking.cpp	(working copy)
+@@ -1253,8 +1253,12 @@
+     // remainder is zero.
+     computeKnownBits(I->getOperand(0), Known2, Depth + 1, Q);
+     // If it's known zero, our sign bit is also zero.
++#if 0 // Soundness Bug #3
+     if (Known2.isNonNegative())
+       Known.makeNonNegative();
++#endif
++    if (Known2.Zero.isNegative())
++      Known.Zero |= Known2.Zero;
+ 
+     break;
+   case Instruction::URem: {
+@@ -2103,8 +2107,11 @@
+     // If X and Y are both non-negative (as signed values) then their sum is not
+     // zero unless both X and Y are zero.
+     if (XKnown.isNonNegative() && YKnown.isNonNegative())
++      return true;
++# if 0 // Soundness Bug 1
+       if (isKnownNonZero(X, Depth, Q) || isKnownNonZero(Y, Depth, Q))
+         return true;
++#endif
+ 
+     // If X and Y are both negative (as signed values) then their sum is not
+     // zero unless both X and Y equal INT_MIN.
+@@ -2376,7 +2383,10 @@
+       // Thus a lower bound on the number of sign bits is `TyBits -
+       // ceilLogBase2(C)`.
+ 
++#if 0 // Soundness Bug 2
+       unsigned ResBits = TyBits - Denominator->ceilLogBase2();
++#endif
++      unsigned ResBits = TyBits - Denominator->logBase2();
+       return std::max(NumrBits, ResBits);
+     }
+     break;
